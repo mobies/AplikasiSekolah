@@ -24,5 +24,13 @@
   },
   "database": {
     "rules": "database.rules"
+  },
+  "hosting": {
+    "source": "web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
   }
 }
