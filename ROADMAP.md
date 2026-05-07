@@ -1,25 +1,28 @@
-# Roadmap Pengembangan Aplikasi Sekolah (Enterprise Edition)
+# Roadmap Pengembangan Aplikasi Sekolah (Enterprise Multi-School SaaS)
 
-Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang terintegrasi, transparan, dan manageable menggunakan arsitektur serverless.
+Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang terintegrasi, transparan, dan manageable menggunakan arsitektur serverless multi-tenant.
 
 ## Technical Stack & Environment
+- **Architecture:** Multi-Tenant SaaS (Isolasi data per sekolah).
 - **Backend (Serverless):** Firebase Cloud Functions (Node.js / TypeScript).
 - **Frontend Web:** Next.js (ReactJS) & Tailwind CSS.
 - **Mobile Apps:** Flutter (Android & iOS).
 - **Desktop Apps:** Electron (untuk POS & Offline-first transaction).
 - **Database Layer:**
-  - **Firestore:** Data utama & profil (Scalable NoSQL).
+  - **Firestore:** Data utama & profil (Multi-tenant isolation).
   - **Firebase RTDB:** Real-time data (IoT, Live Queue, Chat).
   - **SQLite:** Local database untuk aplikasi desktop & IoT (Offline-first).
 - **Infrastructure:** Firebase Hosting, Firebase Auth, Cloud Storage.
 - **Integration:** Payment Gateway (Xendit/Midtrans), WhatsApp API (Notifications).
 
-## Fase 1: Foundation & Core Identity (Bulan 1-2)
-**Tujuan:** Membangun identitas digital dan basis data terpusat.
-- [ ] **Website Informasi Sekolah (CMS):** Profil, Berita, Galeri, dan Pengumuman.
-- [ ] **Sistem Pendaftaran (PPDB Online):** Registrasi, Seleksi, dan Pemberkasan Digital.
-- [ ] **Basis Data Induk (Core Database):** Manajemen Data Siswa, Guru, dan Staf.
-- [ ] **Single Sign-On (SSO):** Sistem login terintegrasi untuk Web, Mobile, dan Desktop.
+## Fase 1: Foundation & Multi-School Onboarding (Bulan 1-2)
+**Tujuan:** Membangun ekosistem SaaS dan identitas digital.
+- [ ] **SaaS Onboarding:** Pendaftaran sekolah oleh Admin Utama dan Approval oleh Owner.
+- [ ] **Security Rules & RBAC:** Implementasi Firebase Rules untuk Owner, School Admin, Guru, Siswa, Ortu, dan Vendor.
+- [ ] **Website Informasi Sekolah (CMS):** Profil, Berita, Galeri (Dynamic per sekolah).
+- [ ] **Sistem Pendaftaran (PPDB Online):** Alur registrasi siswa baru yang terintegrasi ke database sekolah masing-masing.
+- [ ] **Basis Data Induk (Core Database):** Manajemen Data Siswa, Guru, dan Staf dengan isolasi antar sekolah.
+- [ ] **Single Sign-On (SSO):** Sistem login terintegrasi untuk seluruh ekosistem.
 
 ## Fase 2: Academic & Attendance Automation (Bulan 3-4)
 **Tujuan:** Digitalisasi aktivitas harian dan kehadiran.
