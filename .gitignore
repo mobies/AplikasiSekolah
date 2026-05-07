@@ -1,5 +1,11 @@
-# Firebase Admin SDK keys
-*.json
+# Firebase Admin SDK keys (Specific files)
+appsekolah2026-firebase-adminsdk-*.json
+
+# Allow configuration JSON files
+!firebase.json
+!package.json
+!tsconfig.json
+!package-lock.json
 
 # IDEs and editors
 .vscode/
