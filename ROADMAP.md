@@ -1,6 +1,18 @@
 # Roadmap Pengembangan Aplikasi Sekolah (Enterprise Edition)
 
-Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang terintegrasi, transparan, dan manageable.
+Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang terintegrasi, transparan, dan manageable menggunakan arsitektur serverless.
+
+## Technical Stack & Environment
+- **Backend (Serverless):** Firebase Cloud Functions (Node.js / TypeScript).
+- **Frontend Web:** Next.js (ReactJS) & Tailwind CSS.
+- **Mobile Apps:** Flutter (Android & iOS).
+- **Desktop Apps:** Electron (untuk POS & Offline-first transaction).
+- **Database Layer:**
+  - **Firestore:** Data utama & profil (Scalable NoSQL).
+  - **Firebase RTDB:** Real-time data (IoT, Live Queue, Chat).
+  - **SQLite:** Local database untuk aplikasi desktop & IoT (Offline-first).
+- **Infrastructure:** Firebase Hosting, Firebase Auth, Cloud Storage.
+- **Integration:** Payment Gateway (Xendit/Midtrans), WhatsApp API (Notifications).
 
 ## Fase 1: Foundation & Core Identity (Bulan 1-2)
 **Tujuan:** Membangun identitas digital dan basis data terpusat.
@@ -37,7 +49,7 @@ Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang 
 ---
 
 ## Standar Teknis Pro Level
-- **Backend:** NestJS / FastAPI (Modular Architecture)
-- **Database:** PostgreSQL (Transactional) & Firestore (Real-time)
-- **Frontend:** Next.js (Web), Flutter (Mobile), Electron (Desktop)
-- **Keamanan:** OAuth2, RBAC, Data Encryption, & Audit Logs.
+- **Architecture:** Serverless Microservices.
+- **Database:** Polyglot Persistence (Firestore + RTDB + SQLite).
+- **Security:** OAuth2 (Firebase Auth), RBAC, End-to-end Encryption for Financial Data.
+- **DevOps:** CI/CD via GitHub Actions.
