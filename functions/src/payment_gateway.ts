@@ -38,6 +38,7 @@ async function validateOwner(request: any) {
  */
 export const updatePaymentGatewayConfig = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -82,6 +83,7 @@ export const updatePaymentGatewayConfig = onCall({
  */
 export const getPaymentGatewayStatus = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {

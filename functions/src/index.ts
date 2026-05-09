@@ -49,6 +49,7 @@ async function validateOrigin(request: any) {
  */
 export const registerSchool = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -102,6 +103,7 @@ export const registerSchool = onCall({
  */
 export const checkUserRole = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -200,6 +202,7 @@ export const checkUserRole = onCall({
  */
 export const approveSchool = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -285,6 +288,7 @@ export const approveSchool = onCall({
  */
 export const rejectSchool = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -342,6 +346,7 @@ export const rejectSchool = onCall({
  */
 export const addSchoolAdmin = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -392,6 +397,7 @@ export const addSchoolAdmin = onCall({
  */
 export const updateSchoolSubscription = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -441,6 +447,7 @@ export const updateSchoolSubscription = onCall({
  */
 export const deactivateSchool = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -474,6 +481,7 @@ export const deactivateSchool = onCall({
  */
 export const activateSchool = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -509,6 +517,7 @@ export const activateSchool = onCall({
  */
 export const deleteSchoolPermanently = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -548,6 +557,7 @@ export const deleteSchoolPermanently = onCall({
  */
 export const cancelRegistration = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -629,6 +639,7 @@ export const processMailQueue = onValueCreated({
  */
 export const updateSmtpConfig = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -681,6 +692,7 @@ export const updateSmtpConfig = onCall({
  */
 export const getSmtpStatus = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {

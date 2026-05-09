@@ -4,6 +4,14 @@ import * as nodemailer from "nodemailer";
 
 const region = "asia-southeast1";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://appsekolah2026.web.app",
+  "https://appsekolah2026.firebaseapp.com",
+];
+
 /**
  * Helper untuk memvalidasi Owner (Re-used)
  */
@@ -19,6 +27,7 @@ async function validateOwner(request: any) {
  */
 export const updateOwnerSmtpConfig = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -66,6 +75,7 @@ export const updateOwnerSmtpConfig = onCall({
  */
 export const setDefaultOwnerPG = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -87,6 +97,7 @@ export const setDefaultOwnerPG = onCall({
  */
 export const getOwnerPGStatus = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -119,6 +130,7 @@ export const getOwnerPGStatus = onCall({
  */
 export const getOwnerSmtpStatus = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -148,6 +160,7 @@ export const getOwnerSmtpStatus = onCall({
  */
 export const updatePlanConfig = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -178,6 +191,7 @@ export const updatePlanConfig = onCall({
  */
 export const getPlanConfigs = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -194,6 +208,7 @@ export const getPlanConfigs = onCall({
  */
 export const updatePublicFeatures = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {
@@ -215,6 +230,7 @@ export const updatePublicFeatures = onCall({
  */
 export const getPublicFeatures = onCall({
   region: region,
+  cors: allowedOrigins,
 
 }, async (request) => {
   try {

@@ -139,8 +139,17 @@ export const onRombelChange = onValueWritten({
 // ============================================================
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://appsekolah2026.web.app",
+  "https://appsekolah2026.firebaseapp.com",
+];
+
 export const recalcSummary = onCall({
   region: "asia-southeast1",
+  cors: allowedOrigins,
   memory: "512MiB",
   timeoutSeconds: 60,
 }, async (request) => {

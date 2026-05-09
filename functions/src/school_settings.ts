@@ -3,6 +3,14 @@ import * as admin from "firebase-admin";
 
 const region = "asia-southeast1";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://appsekolah2026.web.app",
+  "https://appsekolah2026.firebaseapp.com",
+];
+
 /**
  * Helper untuk memvalidasi Admin Sekolah
  */
@@ -22,6 +30,7 @@ async function validateSchoolAdmin(request: any, npsn: string) {
  */
 export const updateSchoolPG = onCall({
   region: region,
+  cors: allowedOrigins,
 }, async (request) => {
   try {
     const { npsn, provider, config } = request.data || {};
@@ -84,6 +93,7 @@ export const setDefaultSchoolPG = onCall({
  */
 export const getSchoolPGStatus = onCall({
   region: region,
+  cors: allowedOrigins,
 }, async (request) => {
   try {
     const { npsn } = request.data || {};
@@ -122,6 +132,7 @@ export const getSchoolPGStatus = onCall({
  */
 export const importSchoolData = onCall({
   region: region,
+  cors: allowedOrigins,
   memory: "1GiB",
   timeoutSeconds: 120,
 }, async (request) => {
