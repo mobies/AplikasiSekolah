@@ -120,7 +120,7 @@ export default function OwnerSettings() {
       const getStatusFn = httpsCallable(functions, "getPaymentGatewayStatus");
       const result = await getStatusFn({});
       const data = result.data as any;
-      setPgStatus(data.providers || {});
+      setPgStatus(data || {});
     } catch (error) {
       console.error("Fetch PG Status Error:", error);
     }

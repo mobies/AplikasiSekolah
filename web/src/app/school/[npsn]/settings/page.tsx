@@ -114,7 +114,7 @@ export default function SchoolSettings() {
       const getStatusFn = httpsCallable(functions, "getSchoolPGStatus");
       const result = await getStatusFn({ npsn });
       const data = result.data as any;
-      setPgStatus(data.providers || {});
+      setPgStatus(data || {});
     } catch (error) {
       console.error("Fetch PG Status Error:", error);
     }
