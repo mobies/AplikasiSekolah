@@ -122,7 +122,7 @@ export default function SchoolAdminDashboard() {
     // 3. Listener Real-time untuk Statistik (Cost Optimization)
     const statsRef = ref(rtdb, `schools/summary/${npsn}`);
     const unsubscribeStats = onValue(statsRef, (snap) => {
-      if (snap.exists()) setStats(snap.val());
+      if (snap.exists()) setStats(prev => ({ ...prev, ...snap.val() }));
     });
 
     unsubsRef.current.auth = unsubscribeAuth;
@@ -240,25 +240,25 @@ export default function SchoolAdminDashboard() {
             <div className="grid grid-cols-4 gap-6 mb-10">
               <StatCard 
                 label="Total User" 
-                value={stats.totalUsers.toLocaleString('id-ID')} 
+                value={(stats.totalUsers || 0).toLocaleString('id-ID')} 
                 subValue="Akun Terdaftar"
                 icon={<Users className="text-blue-400" />} 
               />
               <StatCard 
                 label="Data Siswa" 
-                value={stats.totalStudents.toLocaleString('id-ID')} 
+                value={(stats.totalStudents || 0).toLocaleString('id-ID')} 
                 subValue="Record Master"
                 icon={<Users className="text-indigo-400" />} 
               />
               <StatCard 
                 label="Guru Aktif" 
-                value={stats.totalTeachers.toLocaleString('id-ID')} 
+                value={(stats.totalTeachers || 0).toLocaleString('id-ID')} 
                 subValue="Tenaga Pendidik"
                 icon={<GraduationCap className="text-emerald-400" />} 
               />
               <StatCard 
                 label="Total Rombel" 
-                value={stats.totalRombel.toLocaleString('id-ID')} 
+                value={(stats.totalRombel || 0).toLocaleString('id-ID')} 
                 subValue="Siswa dlm Kelas"
                 icon={<BookOpen className="text-amber-400" />} 
               />
