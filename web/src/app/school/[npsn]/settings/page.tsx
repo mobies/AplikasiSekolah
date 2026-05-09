@@ -66,8 +66,8 @@ export default function SchoolSettings() {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
-    // Jika bulan >= 6 (Juli), tahun ajaran adalah year/year+1
-    return month >= 6 ? `${year}/${year + 1}` : `${year - 1}/${year}`;
+    // Jika bulan >= 6 (Juli), tahun ajaran adalah year_year+1 (underscore agar aman di Firebase RTDB)
+    return month >= 6 ? `${year}_${year + 1}` : `${year - 1}_${year}`;
   });
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -582,9 +582,9 @@ export default function SchoolSettings() {
                             onChange={(e) => setTahunAjaran(e.target.value)}
                           >
                             {(() => {
-                              const currentYear = parseInt(tahunAjaran.split('/')[0]);
+                              const currentYear = parseInt(tahunAjaran.split('_')[0]);
                               return [currentYear - 1, currentYear, currentYear + 1].map(y => (
-                                <option key={y} value={`${y}/${y+1}`}>{y}/{y+1}</option>
+                                <option key={y} value={`${y}_${y+1}`}>{y}/{y+1}</option>
                               ));
                             })()}
                           </select>
