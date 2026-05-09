@@ -147,13 +147,13 @@ export default function RombelPage() {
           <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-2xl px-4 py-2">
             <Filter className="w-4 h-4 text-slate-500" />
             <select 
-              className="bg-transparent text-white font-bold text-xs uppercase tracking-widest focus:outline-none cursor-pointer"
+              className="bg-transparent text-white font-bold text-xs uppercase tracking-widest focus:outline-none cursor-pointer [&>option]:bg-slate-900"
               value={tahunAjaran}
               onChange={(e) => setTahunAjaran(e.target.value)}
             >
-              <option value="2024_2025">2024/2025</option>
-              <option value="2025_2026">2025/2026</option>
-              <option value="2026_2027">2026/2027</option>
+              <option value="2024_2025" className="bg-slate-900">2024/2025</option>
+              <option value="2025_2026" className="bg-slate-900">2025/2026</option>
+              <option value="2026_2027" className="bg-slate-900">2026/2027</option>
             </select>
           </div>
           

@@ -713,7 +713,7 @@ export default function OwnerSettings() {
                             {/* Feature Selector Dropdown */}
                             <div className="pt-4">
                               <select 
-                                className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-xs text-slate-400 focus:outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer hover:bg-slate-900"
+                                className="w-full bg-slate-950 border border-slate-800 rounded-2xl px-6 py-4 text-xs text-slate-400 focus:outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer hover:bg-slate-900 [&>option]:bg-slate-950"
                                 onChange={(e) => {
                                   const val = e.target.value;
                                   if (val && !planConfigs[planId].features.includes(val)) {
@@ -725,11 +725,11 @@ export default function OwnerSettings() {
                                   e.target.value = ""; // Reset
                                 }}
                               >
-                                <option value="">+ Assign Service Item</option>
+                                <option value="" className="bg-slate-950">+ Assign Service Item</option>
                                 {globalFeatures
                                   .filter(f => !planConfigs[planId].features.includes(f))
                                   .map((f, idx) => (
-                                    <option key={idx} value={f}>
+                                    <option key={idx} value={f} className="bg-slate-950">
                                       {f}
                                     </option>
                                   ))

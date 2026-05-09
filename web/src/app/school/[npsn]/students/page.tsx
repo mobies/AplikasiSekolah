@@ -87,13 +87,13 @@ export default function StudentsPage() {
           <div className="flex items-center gap-3 w-full md:w-auto">
             <Filter className="w-5 h-5 text-slate-500" />
             <select 
-              className="bg-slate-900 border border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 transition-all text-white font-bold text-xs uppercase tracking-widest appearance-none cursor-pointer"
+              className="bg-slate-900 border border-slate-800 rounded-2xl px-6 py-4 focus:outline-none focus:border-indigo-500 transition-all text-white font-bold text-xs uppercase tracking-widest appearance-none cursor-pointer [&>option]:bg-slate-900"
               value={selectedClass}
               onChange={(e) => setSelectedClass(e.target.value)}
             >
-              <option value="all">Semua Kelas</option>
+              <option value="all" className="bg-slate-900">Semua Kelas</option>
               {uniqueClasses.map(c => (
-                <option key={c} value={c}>{c === "UNDEFINED_CLASS" ? "Belum Terbagi Kelas" : c}</option>
+                <option key={c} value={c} className="bg-slate-900">{c === "UNDEFINED_CLASS" ? "Belum Terbagi Kelas" : c}</option>
               ))}
             </select>
           </div>
