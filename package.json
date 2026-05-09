@@ -1,4 +1,17 @@
 {
+  "name": "appsekolah-root",
+  "version": "1.0.0",
+  "description": "Root scripts for Aplikasi Sekolah SaaS development",
+  "scripts": {
+    "dev": "npm run emulator & npm --prefix web run dev",
+    "emulator": "cd functions && npm run build && cd .. && firebase emulators:start",
+    "emulator:ui": "firebase emulators:start --import=.emulator-data --export-on-exit=.emulator-data",
+    "deploy": "firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "build:functions": "npm --prefix functions run build",
+    "logs": "firebase functions:log"
+  },
   "dependencies": {
     "firebase-admin": "^13.9.0"
   }

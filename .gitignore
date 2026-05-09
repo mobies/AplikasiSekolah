@@ -7,6 +7,9 @@
 .env.local
 .env.*.local
 
+# Firebase Emulator local data (seed data lokal, tidak perlu di-commit)
+.emulator-data/
+
 # Allow configuration files
 !firebase.json
 !package.json
