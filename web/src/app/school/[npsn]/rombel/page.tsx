@@ -36,6 +36,7 @@ export default function RombelPage() {
   const [selectedRombel, setSelectedRombel] = useState<any>(null);
   const [isClassModalOpen, setIsClassModalOpen] = useState(false);
   const [newClassName, setNewClassName] = useState("");
+  const [studentSearchQuery, setStudentSearchQuery] = useState("");
 
   const [tahunAjaran, setTahunAjaran] = useState(() => {
     const now = new Date();
@@ -239,9 +240,22 @@ export default function RombelPage() {
                     <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Tahun Ajaran {tahunAjaran.replace('_', '/')}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedRombel(null)} className="p-2 hover:bg-slate-800 rounded-xl text-slate-500 transition-all">
+                <button onClick={() => { setSelectedRombel(null); setStudentSearchQuery(""); }} className="p-2 hover:bg-slate-800 rounded-xl text-slate-500 transition-all">
                   <X className="w-6 h-6" />
                 </button>
+              </div>
+
+              <div className="px-8 py-4 bg-slate-900 border-b border-slate-800">
+                <div className="relative group">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 group-focus-within:text-indigo-400 transition-colors" />
+                  <input 
+                    type="text" 
+                    placeholder="Cari nama atau NISN siswa..."
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:border-indigo-500 transition-all text-white text-sm"
+                    value={studentSearchQuery}
+                    onChange={(e) => setStudentSearchQuery(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div className="overflow-y-auto p-4 custom-scrollbar">
@@ -253,12 +267,18 @@ export default function RombelPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/50">
-                    {selectedRombel.students.map((s: any) => (
-                      <tr key={s.uid || s.nisn} className="group hover:bg-slate-800/30 transition-all">
-                        <td className="px-6 py-4 font-bold text-white text-sm">{s.nama}</td>
-                        <td className="px-6 py-4 font-mono text-xs text-slate-500">{s.nisn || "-"}</td>
-                      </tr>
-                    ))}
+                    {selectedRombel.students
+                      .filter((s: any) => 
+                        s.nama.toLowerCase().includes(studentSearchQuery.toLowerCase()) || 
+                        s.nisn?.toLowerCase().includes(studentSearchQuery.toLowerCase())
+                      )
+                      .sort((a: any, b: any) => a.nama.localeCompare(b.nama))
+                      .map((s: any) => (
+                        <tr key={s.uid || s.nisn} className="group hover:bg-slate-800/30 transition-all">
+                          <td className="px-6 py-4 font-bold text-white text-sm">{s.nama}</td>
+                          <td className="px-6 py-4 font-mono text-xs text-slate-500">{s.nisn || "-"}</td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
