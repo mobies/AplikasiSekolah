@@ -3,6 +3,14 @@ import * as admin from "firebase-admin";
 
 const region = "asia-southeast1";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://appsekolah2026.web.app",
+  "https://appsekolah2026.firebaseapp.com",
+];
+
 /**
  * Helper untuk memvalidasi origin (Copied for isolation)
  */
