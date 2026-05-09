@@ -184,7 +184,7 @@ export default function SchoolAdminDashboard() {
               <LinkItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
               <LinkItem icon={<Users size={20} />} label="Data Siswa" href={`/school/${npsn}/students`} />
               <LinkItem icon={<GraduationCap size={20} />} label="Data Guru" href={`/school/${npsn}/teachers`} />
-              <LinkItem icon={<BookOpen size={20} />} label="Data Kelas" href={`/school/${npsn}/classes`} />
+              <LinkItem icon={<BookOpen size={20} />} label="Data Rombel" href={`/school/${npsn}/rombel`} />
               <LinkItem icon={<Wallet size={20} />} label="Keuangan" />
               <LinkItem icon={<Settings size={20} />} label="Pengaturan" href={`/school/${npsn}/settings`} />
             </nav>

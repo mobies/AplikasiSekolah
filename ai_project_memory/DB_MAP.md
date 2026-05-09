@@ -5,6 +5,12 @@
 
 ---
 
+## DEFINISI TERMINOLOGI (PENTING)
+- **Kelas (`reference/classroom`)**: Ruang fisik atau referensi tingkatan kosong yang *dapat* diisi oleh siswa.
+- **Rombel (`rombel`)**: Rombongan Belajar, yakni Kelas yang *telah terisi* oleh siswa pada tahun ajaran tertentu.
+
+---
+
 ## SKEMA LENGKAP PATH DATABASE
 
 ```

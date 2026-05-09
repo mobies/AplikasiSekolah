@@ -60,6 +60,10 @@ Aplikasi Sekolah/
 | **JANGAN hardcode secrets** | API key, password, token → simpan di Firebase Functions config atau environment variable. |
 | **JANGAN expose NPSN sekolah lain** | Setiap fungsi harus validasi `validateSchoolAdmin()` sebelum akses data sekolah. |
 
+### 🔴 TERMINOLOGI (PENTING)
+- **Kelas (`reference/classroom`)**: Ruang fisik atau referensi tingkatan kosong yang *dapat* diisi oleh siswa.
+- **Rombel (`rombel`)**: Rombongan Belajar, yakni Kelas yang *telah terisi* oleh siswa pada tahun ajaran tertentu. UI Manajemen Kelas disajikan dalam bentuk dialog di dalam halaman Data Rombel.
+
 ### 🔴 DATABASE — KRITIS
 
 | Aturan | Detail |
