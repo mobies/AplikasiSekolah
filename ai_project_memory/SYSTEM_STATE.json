@@ -1,0 +1,32 @@
+{
+  "projectName": "Aplikasi Sekolah SaaS",
+  "currentFocus": "School Admin Dashboard & Multi-tenancy Rules",
+  "stableModules": [
+    "functions:validateOrigin",
+    "functions:checkUserRole",
+    "web:firebaseConfig",
+    "web:googleAuthFlow"
+  ],
+  "protectedModules": [
+    "functions/src/index.ts",
+    "web/src/lib/firebase.ts",
+    "database.rules.json"
+  ],
+  "activeTasks": [
+    "Build Admin Dashboard UI",
+    "Implement Firestore Security Rules per school"
+  ],
+  "architecture": {
+    "type": "Serverless Multi-tenant",
+    "frontend": "Next.js 14",
+    "backend": "Cloud Functions v2 (Node.js 20)",
+    "database": "Firestore + RTDB",
+    "auth": "Google SSO"
+  },
+  "deployment": {
+    "hosting": "Firebase Hosting",
+    "functionsRegion": "asia-southeast1",
+    "databaseRegion": "asia-southeast1"
+  },
+  "notes": "System is currently stable with secure onboarding flow. RTDB is used as a fast status cache for registrations."
+}

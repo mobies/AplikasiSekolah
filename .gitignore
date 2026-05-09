@@ -1,25 +1,64 @@
-# Firebase Admin SDK keys (Specific files)
-appsekolah2026-firebase-adminsdk-*.json
+# ============================================================
+# KEAMANAN — Firebase Admin SDK Keys (JANGAN PERNAH DI-PUSH!)
+# ============================================================
+*-firebase-adminsdk-*.json
+*.serviceAccount.json
+.env
+.env.local
+.env.*.local
 
-# Allow configuration JSON files
+# Allow configuration files
 !firebase.json
 !package.json
 !tsconfig.json
-!package-lock.json
 
+# ============================================================
+# Dependencies
+# ============================================================
+node_modules/
+
+# Hanya simpan package-lock.json di sub-folder masing-masing
+# Hapus lock file yang tidak perlu di root
+package-lock.json
+
+# ============================================================
+# Build artifacts
+# ============================================================
+functions/lib/
+.firebase/
+.next/
+out/
+
+# ============================================================
 # IDEs and editors
+# ============================================================
 .vscode/
 .idea/
 *.swp
 *.swo
 
+# ============================================================
 # OS files
+# ============================================================
 Thumbs.db
 .DS_Store
 
+# ============================================================
 # Logs
-logs
+# ============================================================
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ============================================================
+# Script utility (tidak perlu di-commit)
+# ============================================================
+init_origins.js
+init_owner.js
+init_plans.js
+sampel_data_owner.json
+sample_db_owner.json
+database_all.json
+migrasi_data_user.json

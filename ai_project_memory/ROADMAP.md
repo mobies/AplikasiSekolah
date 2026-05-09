@@ -17,12 +17,17 @@ Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang 
 
 ## Fase 1: Foundation & Multi-School Onboarding (Bulan 1-2)
 **Tujuan:** Membangun ekosistem SaaS dan identitas digital.
-- [ ] **SaaS Onboarding:** Pendaftaran sekolah oleh Admin Utama dan Approval oleh Owner.
-- [ ] **Security Rules & RBAC:** Implementasi Firebase Rules untuk Owner, School Admin, Guru, Siswa, Ortu, dan Vendor.
+- [x] **SaaS Onboarding:** Pendaftaran sekolah via Google Login, Approval/Reject oleh Owner.
+- [x] **Owner Management Panel:** Dashboard pusat untuk memantau pendaftaran, manajemen paket layanan (Starter, Standard, Premium), dan lisensi real-time.
+- [x] **Secure Architecture:** Dynamic CORS Allow-list di RTDB, Server-side validation (v2), dan RTDB Status Tracking.
+- [x] **Security Rules & RBAC:** Implementasi Firebase Rules untuk isolasi data antar sekolah (Multi-tenant).
+- [x] **Single Sign-On (SSO):** Sistem login terintegrasi menggunakan Google Auth dengan auto-redirection.
 - [ ] **Website Informasi Sekolah (CMS):** Profil, Berita, Galeri (Dynamic per sekolah).
 - [ ] **Sistem Pendaftaran (PPDB Online):** Alur registrasi siswa baru yang terintegrasi ke database sekolah masing-masing.
 - [ ] **Basis Data Induk (Core Database):** Manajemen Data Siswa, Guru, dan Staf dengan isolasi antar sekolah.
-- [ ] **Single Sign-On (SSO):** Sistem login terintegrasi untuk seluruh ekosistem.
+
+> [!TIP]
+> **Dokumentasi Arsitektur:** Lihat [DB_MAP.md](file:///e:/Projects/AntiGravity/Aplikasi%20Sekolah/DB_MAP.md) untuk detail skema dan alur data database.
 
 ## Fase 2: Academic & Attendance Automation (Bulan 3-4)
 **Tujuan:** Digitalisasi aktivitas harian dan kehadiran.
