@@ -165,17 +165,20 @@ export const importSchoolData = onCall({
         const classId = data.kelas || "UNDEFINED_CLASS";
         classes.add(classId);
 
-        // 3. Data Siswa: /schools/students/{NPSN}/{uid}
-        updates[`schools/students/${npsn}/${uid}`] = {
+        const nisn = data.nisn || `NONISN_${uid}`;
+
+        // 3. Data Siswa: /schools/students/{NPSN}/{nisn}
+        updates[`schools/students/${npsn}/${nisn}`] = {
           nama,
-          nisn: data.nisn || "0",
+          uid: uid,
           classId: classId,
           lastImported: timestamp
         };
 
-        // 4. Data Rombel: /schools/rombel/{NPSN}/{tahun_ajaran}/{classId}/{uid}
-        updates[`schools/rombel/${npsn}/${tahunAjaran}/${classId}/${uid}`] = {
+        // 4. Data Rombel: /schools/rombel/{NPSN}/{tahun_ajaran}/{classId}/{nisn}
+        updates[`schools/rombel/${npsn}/${tahunAjaran}/${classId}/${nisn}`] = {
           nama,
+          uid: uid,
           joinedAt: timestamp
         };
       } else if (role === "teacher") {

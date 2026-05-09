@@ -164,7 +164,7 @@ await admin.database().ref(`schools/summary/${npsn}`).update({
 
 // ❌ SALAH — tulis satu per satu (N write operations + trigger storm)
 for (const student of students) {
-  await admin.database().ref(`schools/students/${npsn}/${uid}`).set(student);
+  await admin.database().ref(`schools/students/${npsn}/${nisn}`).set(student);
 }
 ```
 

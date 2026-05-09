@@ -55,10 +55,10 @@ export const onUserChange = onValueWritten({
 });
 
 // ============================================================
-// TRIGGER 2: Total Siswa (/schools/students/{npsn}/{uid})
+// TRIGGER 2: Total Siswa (/schools/students/{npsn}/{nisn})
 // ============================================================
 export const onStudentChange = onValueWritten({
-  ref: "/schools/students/{npsn}/{uid}",
+  ref: "/schools/students/{npsn}/{nisn}",
   region: "asia-southeast1",
 }, async (event) => {
   try {
@@ -104,14 +104,14 @@ export const onClassChange = onValueWritten({
 
 // ============================================================
 // TRIGGER 5: Total Rombel — HATI-HATI BIAYA!
-// Path: /schools/rombel/{npsn}/{tahunAjaran}/{classId}/{uid}
+// Path: /schools/rombel/{npsn}/{tahunAjaran}/{classId}/{nisn}
 //
 // Trigger ini SENGAJA hanya berjalan pada operasi per-siswa normal.
 // Untuk impor massal, gunakan recalcRombelSummary() yang dipanggil
 // secara eksplisit di akhir proses importSchoolData.
 // ============================================================
 export const onRombelChange = onValueWritten({
-  ref: "/schools/rombel/{npsn}/{tahunAjaran}/{classId}/{uid}",
+  ref: "/schools/rombel/{npsn}/{tahunAjaran}/{classId}/{nisn}",
   region: "asia-southeast1",
 }, async (event) => {
   try {

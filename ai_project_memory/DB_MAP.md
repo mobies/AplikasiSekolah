@@ -114,11 +114,11 @@
 }
 ```
 
-### `/schools/students/{NPSN}/{uid}`
+### `/schools/students/{NPSN}/{nisn}`
 ```json
 {
   "nama": "Budi Santoso",
-  "nisn": "0012345678",
+  "uid": "user_uid_123",
   "classId": "XI-IPA-1",
   "lastImported": 1715234567890
 }
@@ -133,10 +133,11 @@
 }
 ```
 
-### `/schools/rombel/{NPSN}/{tahunAjaran}/{classId}/{uid}`
+### `/schools/rombel/{NPSN}/{tahunAjaran}/{classId}/{nisn}`
 ```json
 {
   "nama": "Budi Santoso",
+  "uid": "user_uid_123",
   "joinedAt": 1715234567890
 }
 ```

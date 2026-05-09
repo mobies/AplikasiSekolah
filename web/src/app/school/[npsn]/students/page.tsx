@@ -28,8 +28,8 @@ export default function StudentsPage() {
     const unsubscribe = onValue(studentsRef, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const list = Object.entries(data).map(([uid, val]: [string, any]) => ({
-          uid,
+        const list = Object.entries(data).map(([nisnKey, val]: [string, any]) => ({
+          nisn: nisnKey.startsWith("NONISN_") ? "" : nisnKey,
           ...val
         }));
         setStudents(list);

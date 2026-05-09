@@ -37,7 +37,10 @@ const functions = getFunctions(app, "asia-southeast1");
  */
 const isEmulatorConnected = (globalThis as any).__firebaseEmulatorsConnected;
 
-if (process.env.NODE_ENV === "development" && !isEmulatorConnected) {
+// Hanya gunakan emulator jika secara eksplisit diaktifkan lewat .env.local
+// (NEXT_PUBLIC_USE_EMULATOR=true). Secara default sekarang akan terhubung
+// ke server produksi (karena CORS untuk localhost sudah diizinkan di backend).
+if (process.env.NEXT_PUBLIC_USE_EMULATOR === "true" && !isEmulatorConnected) {
   try {
     connectFunctionsEmulator(functions, "localhost", 5001);
     connectDatabaseEmulator(rtdb, "localhost", 9000);
@@ -45,7 +48,6 @@ if (process.env.NODE_ENV === "development" && !isEmulatorConnected) {
     (globalThis as any).__firebaseEmulatorsConnected = true;
     console.log("🔧 Firebase Emulators connected (dev mode)");
   } catch (err) {
-    // Sudah terkoneksi atau emulator tidak berjalan — aman diabaikan
     console.warn("⚠️ Emulator connect skipped:", err);
   }
 }
