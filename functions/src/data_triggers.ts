@@ -118,7 +118,7 @@ export const onRombelChange = onValueWritten({
     const npsn = event.params.npsn;
     const tahunAjaran = event.params.tahunAjaran;
     // Hanya hitung rombel untuk tahun ajaran yang berubah (lebih efisien)
-    const total = await countChildren(`schools/rombel/${npsn}/${tahunAjaran}`);
+    // Hanya hitung rombel untuk tahun ajaran yang berubah (lebih efisien)
     // Hitung total gabungan semua kelas dalam tahun ajaran tersebut
     let totalMembers = 0;
     const snap = await admin.database().ref(`schools/rombel/${npsn}/${tahunAjaran}`).get();
