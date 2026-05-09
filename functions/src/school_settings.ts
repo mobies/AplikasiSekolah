@@ -99,21 +99,19 @@ export const getSchoolPGStatus = onCall({
     const { npsn } = request.data || {};
     if (!npsn) throw new HttpsError("invalid-argument", "NPSN required.");
 
-    const [configsSnap, defaultSnap] = await Promise.all([
-      admin.database().ref(`schools/configs/${npsn}/payment_gateway/configs`).get(),
-      admin.database().ref(`schools/configs/${npsn}/payment_gateway/default`).get()
-    ]);
+    const pgSnap = await admin.database().ref(`schools/configs/${npsn}/payment_gateway`).get();
+    const pgData = pgSnap.val() || {};
 
-    const configs = configsSnap.val() || {};
-    const defaultProvider = defaultSnap.val() || null;
-    
+    const defaultProvider = pgData.default || pgData.active_pg || null;
     const status: any = { providers: {}, defaultProvider };
     
-    Object.keys(configs).forEach(p => {
-      status.providers[p] = {
-        status: "active",
-        isActiveForTransaction: p === defaultProvider
-      };
+    ["midtrans", "xendit", "ipaymu", "duitku", "louvin"].forEach(p => {
+      if (pgData[p] && pgData[p].status === "active") {
+        status.providers[p] = {
+          status: "active",
+          isActiveForTransaction: p === defaultProvider
+        };
+      }
     });
 
     return { 
