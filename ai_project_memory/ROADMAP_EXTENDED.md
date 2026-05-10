@@ -19,7 +19,7 @@
 | Backend | Firebase Cloud Functions V2 (TypeScript, Node.js 22) | ✅ Aktif |
 | Frontend Web | Next.js 16 (App Router) + Tailwind CSS | ✅ Aktif |
 | Database Primary | Firebase RTDB (real-time, counter, IoT) | ✅ Aktif |
-| Database Secondary | Firestore (data utama & profil) | 🔲 Belum aktif |
+| Database Secondary | Firestore (DINONAKTIFKAN SEMENTARA) | ❌ Removed |
 | Database Lokal | SQLite (offline-first, POS & IoT) | 🔲 Belum aktif |
 | Mobile Apps | Flutter (Android & iOS) | 🔲 Belum aktif |
 | Desktop Apps | Electron (POS, CBT Client) | 🔲 Belum aktif |

@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  School, 
-  ShieldCheck, 
-  Users, 
-  CreditCard, 
-  LayoutDashboard, 
+import {
+  School,
+  ShieldCheck,
+  Users,
+  CreditCard,
+  LayoutDashboard,
   ArrowRight,
   ChevronRight,
   CheckCircle2,
@@ -43,7 +43,7 @@ export default function Home() {
   const [planConfigs, setPlanConfigs] = useState<any>(null);
   const [billingCycle, setBillingCycle] = useState<"monthly" | "annual">("monthly");
   const [studentCount, setStudentCount] = useState(100);
-  
+
   const router = useRouter();
 
   useEffect(() => {
@@ -86,12 +86,12 @@ export default function Home() {
 
   const calculatePrice = (planId: string) => {
     if (!planConfigs || !planConfigs[planId]) return 0;
-    
+
     // Pastikan semua input adalah angka untuk menghindari kesalahan hitung
     const pricePerStudent = Number(planConfigs[planId].priceMonthly) || 0;
     const discountPercent = Number(planConfigs[planId].annualDiscount) || 0;
     const currentStudents = Number(studentCount) || 0;
-    
+
     if (billingCycle === "monthly") {
       // Hitungan Bulanan: Harga per siswa * Jumlah Siswa
       return pricePerStudent * currentStudents;
@@ -172,10 +172,10 @@ export default function Home() {
                   <span className="font-bold">Estimasi Jumlah Siswa</span>
                 </div>
                 <div className="flex items-center gap-6">
-                  <input 
-                    type="range" 
-                    min="10" 
-                    max="2000" 
+                  <input
+                    type="range"
+                    min="10"
+                    max="2000"
                     step="10"
                     className="flex-1 accent-indigo-600"
                     value={studentCount}
@@ -193,13 +193,13 @@ export default function Home() {
                   <span className="font-bold">Siklus Pembayaran</span>
                 </div>
                 <div className="flex p-1 bg-slate-100 rounded-2xl">
-                  <button 
+                  <button
                     onClick={() => setBillingCycle("monthly")}
                     className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all ${billingCycle === "monthly" ? "bg-white text-indigo-600 shadow-lg shadow-indigo-100" : "text-slate-500"}`}
                   >
                     Bulanan
                   </button>
-                  <button 
+                  <button
                     onClick={() => setBillingCycle("annual")}
                     className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all relative ${billingCycle === "annual" ? "bg-white text-indigo-600 shadow-lg shadow-indigo-100" : "text-slate-500"}`}
                   >
@@ -217,42 +217,42 @@ export default function Home() {
               (["starter", "standard", "enterprise"] as const)
                 .filter(planId => planConfigs[planId]) // Hanya tampilkan jika data ada
                 .map((planId, i) => (
-                <div key={planId} className={`relative p-10 rounded-[48px] flex flex-col transition-all hover:scale-[1.02] ${planId === 'standard' ? 'bg-slate-900 text-white shadow-[0_40px_80px_-20px_rgba(30,41,59,0.3)] z-10' : 'bg-white text-slate-900 border border-slate-100 shadow-xl'}`}>
-                  {planId === 'standard' && (
-                    <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-xl">Best Value</div>
-                  )}
-                  <h3 className="text-xl font-black uppercase tracking-widest mb-2 italic opacity-60">{planId}</h3>
-                  <div className="mb-8">
-                    <div className="text-4xl font-black mb-1">
-                      Rp {calculatePrice(planId).toLocaleString('id-ID')}
-                    </div>
-                    <div className={`text-xs font-bold ${planId === 'standard' ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {billingCycle === 'monthly' ? 'Total per Bulan' : 'Total per Tahun (Sudah Termasuk Diskon)'}
-                    </div>
-                  </div>
-
-                  <div className={`p-5 rounded-3xl mb-10 ${planId === 'standard' ? 'bg-indigo-600/10 border border-indigo-500/20' : 'bg-slate-50 border border-slate-100'}`}>
-                    <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">
-                      <span>Rate Dasar</span>
-                      <span>/ Siswa</span>
-                    </div>
-                    <div className="font-bold">Rp {(planConfigs[planId].priceMonthly || 0).toLocaleString('id-ID')}</div>
-                  </div>
-
-                  <div className="space-y-5 mb-12 flex-1">
-                    {planConfigs[planId].features?.map((f: any, j: number) => (
-                      <div key={j} className="flex gap-4 items-start">
-                        <CheckCircle2 className={`w-5 h-5 shrink-0 ${planId === 'standard' ? 'text-indigo-400' : 'text-indigo-600'}`} />
-                        <span className="text-sm font-medium leading-snug">{f}</span>
+                  <div key={planId} className={`relative p-10 rounded-[48px] flex flex-col transition-all hover:scale-[1.02] ${planId === 'standard' ? 'bg-slate-900 text-white shadow-[0_40px_80px_-20px_rgba(30,41,59,0.3)] z-10' : 'bg-white text-slate-900 border border-slate-100 shadow-xl'}`}>
+                    {planId === 'standard' && (
+                      <div className="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-xl">Best Value</div>
+                    )}
+                    <h3 className="text-xl font-black uppercase tracking-widest mb-2 italic opacity-60">{planId}</h3>
+                    <div className="mb-8">
+                      <div className="text-4xl font-black mb-1">
+                        Rp {calculatePrice(planId).toLocaleString('id-ID')}
                       </div>
-                    ))}
-                  </div>
+                      <div className={`text-xs font-bold ${planId === 'standard' ? 'text-slate-400' : 'text-slate-500'}`}>
+                        {billingCycle === 'monthly' ? 'Total per Bulan' : 'Total per Tahun (Sudah Termasuk Diskon)'}
+                      </div>
+                    </div>
 
-                  <Link href="/register" className={`w-full py-5 rounded-2xl font-black transition-all text-center uppercase tracking-widest text-xs ${planId === 'standard' ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl shadow-indigo-600/30' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>
-                    Daftar Sekarang
-                  </Link>
-                </div>
-              ))
+                    <div className={`p-5 rounded-3xl mb-10 ${planId === 'standard' ? 'bg-indigo-600/10 border border-indigo-500/20' : 'bg-slate-50 border border-slate-100'}`}>
+                      <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest opacity-60 mb-2">
+                        <span>Rate Dasar</span>
+                        <span>/ Siswa</span>
+                      </div>
+                      <div className="font-bold">Rp {(planConfigs[planId].priceMonthly || 0).toLocaleString('id-ID')}</div>
+                    </div>
+
+                    <div className="space-y-5 mb-12 flex-1">
+                      {planConfigs[planId].features?.map((f: any, j: number) => (
+                        <div key={j} className="flex gap-4 items-start">
+                          <CheckCircle2 className={`w-5 h-5 shrink-0 ${planId === 'standard' ? 'text-indigo-400' : 'text-indigo-600'}`} />
+                          <span className="text-sm font-medium leading-snug">{f}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Link href="/register" className={`w-full py-5 rounded-2xl font-black transition-all text-center uppercase tracking-widest text-xs ${planId === 'standard' ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-xl shadow-indigo-600/30' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>
+                      Daftar Sekarang
+                    </Link>
+                  </div>
+                ))
             ) : (
               <div className="col-span-3 py-20 flex flex-col items-center gap-4">
                 <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />

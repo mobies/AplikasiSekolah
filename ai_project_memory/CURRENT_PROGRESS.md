@@ -12,14 +12,14 @@
 - [x] **Dashboard Admin Sekolah**: Membangun rute `/school/[npsn]/dashboard` dengan desain premium.
 - [x] **Enhanced Role Check**: Penambahan fitur auto-detect NPSN berdasarkan email pada fungsi `checkUserRole`.
 - [x] **Reject Registration System**: Fungsi backend `rejectSchool` dan tombol "Reject" di Owner Dashboard.
-- [x] **Secure Multi-tenancy Rules**: Implementasi Security Rules Firestore untuk isolasi data antar sekolah.
+- [x] **Secure Multi-tenancy Rules**: Implementasi Security Rules RTDB untuk isolasi data antar sekolah.
 - [x] **Smart Email Queue**: Sistem antrean email via Gmail SMTP dengan quota monitoring.
 
 ## 2. Sedang Dikerjakan (In Progress)
 - [x] **Dashboard Admin Sekolah**: Pembuatan skeleton UI premium untuk admin sekolah.
 - [x] **Role Redirection**: Otomasi deteksi NPSN dan redireksi dinamis setelah login.
 - [x] **Reject Registration**: Implementasi fungsi backend dan UI penolakan pendaftaran.
-- [x] **Firestore Multi-tenant Rules**: Pengetatan aturan akses data per sekolah.
+- [x] **RTDB Multi-tenant Rules**: Pengetatan aturan akses data per sekolah.
 
 ## 3. Bug Aktif (Active Bugs)
 - *None* (Semua isu pendaftaran dan login terakhir telah diperbaiki).

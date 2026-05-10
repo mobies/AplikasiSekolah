@@ -9,8 +9,8 @@ Dokumen ini merinci fase-fase pengembangan sistem manajemen sekolah modern yang 
 - **Mobile Apps:** Flutter (Android & iOS).
 - **Desktop Apps:** Electron (untuk POS & Offline-first transaction).
 - **Database Layer:**
-  - **Firestore:** Data utama & profil (Multi-tenant isolation).
-  - **Firebase RTDB:** Real-time data (IoT, Live Queue, Chat).
+  - **Firebase RTDB:** Data utama & profil (Multi-tenant isolation), Real-time data (IoT, Live Queue, Chat).
+  - **Firestore:** (DINONAKTIFKAN SEMENTARA).
   - **SQLite:** Local database untuk aplikasi desktop & IoT (Offline-first).
 - **Infrastructure:** Firebase Hosting, Firebase Auth, Cloud Storage.
 - **Integration:** Payment Gateway (Xendit/Midtrans), WhatsApp API (Notifications).

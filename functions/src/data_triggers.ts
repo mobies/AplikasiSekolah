@@ -5,31 +5,13 @@ import * as admin from "firebase-admin";
  * ============================================================
  * SUMMARY TRIGGERS — Cost-Optimized Statistics Engine
  * ============================================================
- * 
- * ARSITEKTUR: Setiap trigger membaca COUNT dari parent path,
- * bukan iterasi seluruh data. Ini minimal 1 RTDB read per event.
- * 
- * CATATAN PENTING UNTUK AI/DEVELOPER:
- * - Jangan pernah menambahkan logika read besar di sini.
- * - Summary ditulis ke: /schools/summary/{npsn}
- * - Impor massal sebaiknya memanggil recalcSummary secara eksplisit
- *   lewat Cloud Function terpisah, BUKAN mengandalkan trigger ini.
- * ============================================================
  */
 
-/**
- * Helper: Update satu field summary secara atomic
- * Menggunakan set per-field agar tidak menimpa field lain
- */
 async function updateSummaryField(npsn: string, field: string, count: number): Promise<void> {
   await admin.database().ref(`schools/summary/${npsn}/${field}`).set(count);
   await admin.database().ref(`schools/summary/${npsn}/lastUpdate`).set(admin.database.ServerValue.TIMESTAMP);
 }
 
-/**
- * Helper: Hitung jumlah children dari suatu path
- * Menggunakan shallow=true untuk efisiensi (hanya keys, bukan full data)
- */
 async function countChildren(path: string): Promise<number> {
   const snap = await admin.database().ref(path).get();
   if (!snap.exists()) return 0;
@@ -38,9 +20,6 @@ async function countChildren(path: string): Promise<number> {
   return Object.keys(val).length;
 }
 
-// ============================================================
-// TRIGGER 1: Total User (/users/{npsn}/{uid})
-// ============================================================
 export const onUserChange = onValueWritten({
   ref: "/users/{npsn}/{uid}",
   region: "asia-southeast1",
@@ -54,9 +33,6 @@ export const onUserChange = onValueWritten({
   }
 });
 
-// ============================================================
-// TRIGGER 2: Total Siswa (/schools/students/{npsn}/{nisn})
-// ============================================================
 export const onStudentChange = onValueWritten({
   ref: "/schools/students/{npsn}/{nisn}",
   region: "asia-southeast1",
@@ -70,9 +46,6 @@ export const onStudentChange = onValueWritten({
   }
 });
 
-// ============================================================
-// TRIGGER 3: Total Guru (/schools/teachers/{npsn}/{uid})
-// ============================================================
 export const onTeacherChange = onValueWritten({
   ref: "/schools/teachers/{npsn}/{uid}",
   region: "asia-southeast1",
@@ -86,9 +59,6 @@ export const onTeacherChange = onValueWritten({
   }
 });
 
-// ============================================================
-// TRIGGER 4: Total Kelas (/schools/reference/{npsn}/classroom/{classId})
-// ============================================================
 export const onClassChange = onValueWritten({
   ref: "/schools/reference/{npsn}/classroom/{classId}",
   region: "asia-southeast1",
@@ -102,41 +72,55 @@ export const onClassChange = onValueWritten({
   }
 });
 
-// ============================================================
-// TRIGGER 5: Total Rombel — HATI-HATI BIAYA!
-// Path: /schools/rombel/{npsn}/{tahunAjaran}/{classId}/{nisn}
-//
-// Trigger ini SENGAJA hanya berjalan pada operasi per-siswa normal.
-// Untuk impor massal, gunakan recalcRombelSummary() yang dipanggil
-// secara eksplisit di akhir proses importSchoolData.
-// ============================================================
+/**
+ * TRIGGER: Sync Rombel Count to Metadata List & Summary
+ */
 export const onRombelChange = onValueWritten({
-  ref: "/schools/rombel/{npsn}/{tahunAjaran}/{classId}/{nisn}",
+  ref: "/schools/rombel/members/{npsn}/{ta}/{classId}/{nisn}",
   region: "asia-southeast1",
 }, async (event) => {
   try {
-    const npsn = event.params.npsn;
-    const tahunAjaran = event.params.tahunAjaran;
-    // Hanya hitung rombel untuk tahun ajaran yang berubah (lebih efisien)
-    // Hanya hitung rombel untuk tahun ajaran yang berubah (lebih efisien)
-    // Hitung total gabungan semua kelas dalam tahun ajaran tersebut
+    const { npsn, ta, classId } = event.params;
+    
+    // 1. Hitung jumlah siswa dalam kelas ini
+    const classSnap = await admin.database().ref(`schools/rombel/members/${npsn}/${ta}/${classId}`).get();
+    const count = classSnap.exists() ? Object.keys(classSnap.val()).length : 0;
+    
+    const listRef = admin.database().ref(`schools/rombel/lists/${npsn}/${ta}/${classId}`);
+    
+    if (count === 0) {
+      // Jika kosong, hapus dari list
+      await listRef.remove();
+    } else {
+      // Jika ada isi, pastikan ada di list dan update count
+      await listRef.update({
+        name: classId,
+        studentCount: count,
+        lastUpdate: admin.database.ServerValue.TIMESTAMP
+      });
+    }
+
+    // 2. Update Global Summary Stats (untuk tahun ajaran spesifik ini)
     let totalMembers = 0;
-    const snap = await admin.database().ref(`schools/rombel/${npsn}/${tahunAjaran}`).get();
+    let totalGroups = 0;
+    const snap = await admin.database().ref(`schools/rombel/members/${npsn}/${ta}`).get();
     if (snap.exists()) {
-      Object.values(snap.val()).forEach((members: any) => {
+      const data = snap.val();
+      totalGroups = Object.keys(data).length;
+      Object.values(data).forEach((members: any) => {
         totalMembers += Object.keys(members).length;
       });
     }
-    await updateSummaryField(npsn, "totalRombel", totalMembers);
+    await admin.database().ref(`schools/summary/${npsn}`).update({
+      totalRombelMembers: totalMembers,
+      totalRombelGroups: totalGroups,
+      lastUpdate: admin.database.ServerValue.TIMESTAMP
+    });
   } catch (err) {
     console.error("onRombelChange Error:", err);
   }
 });
 
-// ============================================================
-// CALLABLE: Recalculate Summary (dipanggil setelah impor massal)
-// Menghindari trigger storm saat import ratusan/ribuan records
-// ============================================================
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 
 const allowedOrigins = [
@@ -165,32 +149,36 @@ export const recalcSummary = onCall({
       countChildren(`schools/reference/${npsn}/classroom`),
     ]);
 
-    // Hitung total rombel tahun ajaran aktif
     const now = new Date();
     const month = now.getMonth();
     const year = now.getFullYear();
-    const activeTahun = month >= 6 ? `${year}/${year + 1}` : `${year - 1}/${year}`;
-    let rombelCount = 0;
-    const rombelSnap = await admin.database().ref(`schools/rombel/${npsn}/${activeTahun}`).get();
+    const activeTahun = month >= 6 ? `${year}` : `${year - 1}`;
+    
+    let totalRombelMembers = 0;
+    let totalRombelGroups = 0;
+    const rombelSnap = await admin.database().ref(`schools/rombel/members/${npsn}/${activeTahun}`).get();
     if (rombelSnap.exists()) {
-      Object.values(rombelSnap.val()).forEach((members: any) => {
-        rombelCount += Object.keys(members).length;
+      const data = rombelSnap.val();
+      totalRombelGroups = Object.keys(data).length;
+      Object.values(data).forEach((members: any) => {
+        totalRombelMembers += Object.keys(members).length;
       });
     }
 
-    await admin.database().ref(`schools/summary/${npsn}`).set({
+    const summaryData = {
       totalUsers: usersCount,
       totalStudents: studentsCount,
       totalTeachers: teachersCount,
       totalClasses: classesCount,
-      totalRombel: rombelCount,
+      totalRombelMembers: totalRombelMembers,
+      totalRombelGroups: totalRombelGroups,
       lastUpdate: admin.database.ServerValue.TIMESTAMP,
-    });
+    };
 
-    return { success: true, summary: { totalUsers: usersCount, totalStudents: studentsCount, totalTeachers: teachersCount, totalClasses: classesCount, totalRombel: rombelCount } };
+    await admin.database().ref(`schools/summary/${npsn}`).set(summaryData);
+
+    return { success: true, summary: summaryData };
   } catch (error: any) {
-    console.error("recalcSummary Error:", error);
-    if (error instanceof HttpsError) throw error;
     throw new HttpsError("internal", error.message);
   }
 });

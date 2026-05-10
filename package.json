@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Root scripts for Aplikasi Sekolah SaaS development",
   "scripts": {
-    "dev": "npm run emulator & npm --prefix web run dev",
+    "dev": "concurrently \"npm run emulator\" \"npm --prefix web run dev\"",
     "emulator": "cd functions && npm run build && cd .. && firebase emulators:start",
     "emulator:ui": "firebase emulators:start --import=.emulator-data --export-on-exit=.emulator-data",
     "deploy": "firebase deploy",
@@ -14,5 +14,8 @@
   },
   "dependencies": {
     "firebase-admin": "^13.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

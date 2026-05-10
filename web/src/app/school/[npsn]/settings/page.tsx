@@ -23,13 +23,16 @@ import {
   Database,
   Zap,
   Search,
-  File
+  File,
+  Trash2,
+  Shield,
+  UserCheck
 } from "lucide-react";
 import { auth, functions, rtdb } from "@/lib/firebase";
 import { httpsCallable } from "firebase/functions";
 import { useRouter, useParams } from "next/navigation";
 import { signOut } from "firebase/auth";
-import { ref, onValue } from "firebase/database";
+import { ref, onValue, update } from "firebase/database";
 import Swal from "sweetalert2";
 import Link from "next/link";
 
@@ -62,12 +65,18 @@ export default function SchoolSettings() {
 
   const [importJson, setImportJson] = useState("");
   const [previewData, setPreviewData] = useState<any>(null);
+  const [selectedOtherUids, setSelectedOtherUids] = useState<string[]>([]);
+  const [uidsToDelete, setUidsToDelete] = useState<string[]>([]);
+  const [existingUsers, setExistingUsers] = useState<any>(null);
+  const [existingStudents, setExistingStudents] = useState<any>(null);
+  const [postImportAudit, setPostImportAudit] = useState<any>(null);
+  const [isAuditing, setIsAuditing] = useState(false);
   const [tahunAjaran, setTahunAjaran] = useState(() => {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
-    // Jika bulan >= 6 (Juli), tahun ajaran adalah year_year+1 (underscore agar aman di Firebase RTDB)
-    return month >= 6 ? `${year}_${year + 1}` : `${year - 1}_${year}`;
+    // Aturan Global: Jan-Jun -> Year - 1, Jul-Des -> Current Year
+    return month >= 6 ? `${year}` : `${year - 1}`;
   });
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -84,6 +93,27 @@ export default function SchoolSettings() {
         const schoolRef = ref(rtdb, `schools/lists/${npsn}`);
         onValue(schoolRef, (snap) => {
           if (snap.exists()) setSchoolData(snap.val());
+        });
+
+        // Load Existing Users for Migration Comparison
+        const usersRef = ref(rtdb, `users/${npsn}`);
+        onValue(usersRef, (snap) => {
+          if (snap.exists()) setExistingUsers(snap.val());
+          else setExistingUsers({});
+        });
+
+        // Load Existing Master Students for Ghost Detection
+        const masterRef = ref(rtdb, `schools/students/${npsn}`);
+        onValue(masterRef, (snap) => {
+          if (snap.exists()) {
+            const uids = new Set<string>();
+            Object.values(snap.val()).forEach((s: any) => {
+              if (s.uid) uids.add(s.uid);
+            });
+            setExistingStudents(uids);
+          } else {
+            setExistingStudents(new Set());
+          }
         });
 
         await Promise.all([fetchSmtpStatus(), fetchPGStatus()]);
@@ -194,26 +224,39 @@ export default function SchoolSettings() {
   const handlePreviewData = (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = JSON.parse(importJson);
+      const data = typeof importJson === 'string' ? JSON.parse(importJson) : importJson;
       const stats = {
-        total: Object.keys(data).length,
+        total: 0,
         students: 0,
         teachers: 0,
+        otherCount: 0,
         teacherList: [] as string[],
+        otherUsers: [] as any[],
+        orphans: [] as any[],
+        ghosts: [] as any[],
         classes: {} as Record<string, number>,
         samples: [] as any[]
       };
 
-      Object.values(data).forEach((u: any, idx) => {
-        if (u.role === "peserta") {
-          stats.students++;
-          const className = u.kelas || "UNDEFINED_CLASS";
-          stats.classes[className] = (stats.classes[className] || 0) + 1;
-        } else if (u.role === "author") {
+      Object.entries(data).forEach(([uid, u]: [string, any]) => {
+        const role = (u.role || u.ROLE || '').toLowerCase();
+        
+        if (role.includes('admin')) return;
+
+        stats.total++;
+        if (role === 'peserta' || role === 'student') stats.students++;
+        else if (role === 'author' || role === 'teacher') {
           stats.teachers++;
           stats.teacherList.push(u.nama || u.NAMA);
+        } else {
+          stats.otherCount++;
+          stats.otherUsers.push({ uid, ...u });
         }
-        if (idx < 5) stats.samples.push(u);
+
+        const className = u.kelas || u.KELAS || 'Tanpa Kelas';
+        stats.classes[className] = (stats.classes[className] || 0) + 1;
+
+        if (stats.samples.length < 5) stats.samples.push(u);
       });
 
       setPreviewData({
@@ -221,6 +264,7 @@ export default function SchoolSettings() {
         classesCount: Object.keys(stats.classes).length,
         classesSorted: Object.entries(stats.classes).sort((a, b) => b[1] - a[1])
       });
+      setSelectedOtherUids(stats.otherUsers.map(u => u.uid));
     } catch (error) {
       Swal.fire({ title: "JSON Error", text: "Format JSON tidak valid.", icon: "error", background: "#0f172a", color: "#f1f5f9" });
     }
@@ -229,11 +273,76 @@ export default function SchoolSettings() {
   const handleImportData = async () => {
     setIsSaving(true);
     try {
-      const importFn = httpsCallable(functions, "importSchoolData");
-      const result = await importFn({ npsn, jsonData: importJson, tahunAjaran });
-      setImportJson("");
-      setPreviewData(null);
-      Swal.fire({ title: "Berhasil!", text: (result.data as any).message, icon: "success", background: "#0f172a", color: "#f1f5f9" });
+      const importSchoolData = httpsCallable(functions, "importSchoolData");
+      const res: any = await importSchoolData({
+        npsn,
+        jsonData: typeof importJson === 'string' ? importJson : JSON.stringify(importJson),
+        selectedOtherUids,
+        uidsToDelete,
+        tahunAjaran
+      });
+
+      if (res.data.success) {
+        setPostImportAudit({ message: res.data.message });
+        setIsAuditing(true);
+        
+        const usersRef = ref(rtdb, `users/${npsn}`);
+        const studentsRef = ref(rtdb, `schools/students/${npsn}`);
+        
+        onValue(studentsRef, (sSnap) => {
+          const uids = new Set<string>();
+          if (sSnap.exists()) {
+            Object.values(sSnap.val()).forEach((s: any) => { if (s.uid) uids.add(s.uid); });
+          }
+          
+          onValue(usersRef, (uSnap) => {
+            const ghosts: any[] = [];
+            if (uSnap.exists()) {
+              Object.entries(uSnap.val()).forEach(([uid, u]: [string, any]) => {
+                const role = (u.role || "").toLowerCase();
+                if ((role === "student" || role === "peserta") && !uids.has(uid)) {
+                  ghosts.push({ uid, ...u });
+                }
+              });
+            }
+            setPostImportAudit((prev: any) => ({ ...prev, ghosts }));
+            setIsAuditing(false);
+          }, { onlyOnce: true });
+        }, { onlyOnce: true });
+
+        Swal.fire({ 
+          title: "Import Berhasil!", 
+          text: "Data telah masuk ke database. Silakan periksa pembersihan akun hantu di bawah.", 
+          icon: "success", 
+          background: "#0f172a", 
+          color: "#f1f5f9" 
+        });
+        setImportJson("");
+        setPreviewData(null);
+        setUidsToDelete([]);
+      }
+    } catch (error: any) {
+      Swal.fire({ title: "Gagal", text: error.message, icon: "error", background: "#0f172a", color: "#f1f5f9" });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handlePostCleanup = async () => {
+    if (uidsToDelete.length === 0) return;
+    setIsSaving(true);
+    try {
+      const cleanupFn = httpsCallable(functions, "cleanupSchoolUsers");
+      const res: any = await cleanupFn({
+        npsn,
+        uids: uidsToDelete
+      });
+      
+      if (res.data.success) {
+        Swal.fire({ title: "Bersih!", text: res.data.message, icon: "success", background: "#0f172a", color: "#f1f5f9" });
+        setPostImportAudit(null);
+        setUidsToDelete([]);
+      }
     } catch (error: any) {
       Swal.fire({ title: "Gagal", text: error.message, icon: "error", background: "#0f172a", color: "#f1f5f9" });
     } finally {
@@ -582,9 +691,9 @@ export default function SchoolSettings() {
                             onChange={(e) => setTahunAjaran(e.target.value)}
                           >
                             {(() => {
-                              const currentYear = parseInt(tahunAjaran.split('_')[0]);
+                              const currentYear = parseInt(tahunAjaran);
                               return [currentYear - 1, currentYear, currentYear + 1].map(y => (
-                                <option key={y} value={`${y}_${y+1}`}>{y}/{y+1}</option>
+                                <option key={y} value={`${y}`}>{y}/{y+1}</option>
                               ));
                             })()}
                           </select>
@@ -688,6 +797,55 @@ export default function SchoolSettings() {
                         </div>
                       </div>
 
+                      {/* Kolom User Lainnya (Non-Siswa & Non-Guru) */}
+                      {previewData.otherUsers.length > 0 && (
+                        <div className="bg-slate-950/50 border border-slate-800 rounded-[32px] overflow-hidden">
+                          <div className="px-6 py-4 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+                            <h4 className="text-[10px] font-black text-white uppercase tracking-widest">User Lain Terdeteksi (Non-Siswa/Guru)</h4>
+                            <div className="flex gap-4">
+                              <button 
+                                onClick={() => setSelectedOtherUids(previewData.otherUsers.map((u: any) => u.uid))}
+                                className="text-[10px] font-black text-indigo-400 uppercase hover:text-white"
+                              >
+                                Pilih Semua
+                              </button>
+                              <button 
+                                onClick={() => setSelectedOtherUids([])}
+                                className="text-[10px] font-black text-slate-500 uppercase hover:text-white"
+                              >
+                                Hapus Semua
+                              </button>
+                            </div>
+                          </div>
+                          <div className="max-h-[300px] overflow-y-auto p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {previewData.otherUsers.map((u: any) => (
+                              <label 
+                                key={u.uid} 
+                                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer ${
+                                  selectedOtherUids.includes(u.uid) 
+                                    ? "bg-indigo-600/10 border-indigo-500/50" 
+                                    : "bg-slate-900/50 border-slate-800/50 hover:bg-slate-900"
+                                }`}
+                              >
+                                <input 
+                                  type="checkbox" 
+                                  className="w-5 h-5 rounded-lg border-slate-700 bg-slate-950 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-950"
+                                  checked={selectedOtherUids.includes(u.uid)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) setSelectedOtherUids(prev => [...prev, u.uid]);
+                                    else setSelectedOtherUids(prev => prev.filter(id => id !== u.uid));
+                                  }}
+                                />
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-bold text-slate-300">{u.nama || u.NAMA || "Unknown"}</span>
+                                  <span className="text-[10px] font-black uppercase text-slate-500 tracking-tighter">{u.role}</span>
+                                </div>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <div className="bg-indigo-600/5 border border-indigo-500/10 p-8 rounded-[32px]">
                         <h4 className="text-xs font-black text-indigo-400 uppercase tracking-widest mb-4">Sampel Struktur Data</h4>
                         <div className="space-y-3">
@@ -737,6 +895,96 @@ export default function SchoolSettings() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Post-Import Audit & Cleanup Dashboard */}
+          {postImportAudit && (
+            <div className="mt-12 space-y-8 animate-in fade-in slide-in-from-bottom-10 duration-700 pb-20">
+              <div className="bg-slate-900 border-2 border-indigo-500/30 rounded-[40px] p-10 shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                  <Shield size={120} className="text-indigo-500" />
+                </div>
+                
+                <div className="relative z-10">
+                  <h3 className="text-2xl font-black text-white mb-2">Audit Integritas Pasca-Import</h3>
+                  <p className="text-slate-400 font-medium mb-8">Sistem memverifikasi akun siswa terhadap database master setelah import selesai.</p>
+
+                  {isAuditing ? (
+                    <div className="flex items-center gap-4 py-10">
+                      <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+                      <span className="text-lg font-black text-slate-500 uppercase tracking-widest">Memindai Akun Hantu...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-6">
+                      {postImportAudit.ghosts?.length > 0 ? (
+                        <div className="bg-amber-500/5 border border-amber-500/20 rounded-[32px] overflow-hidden">
+                          <div className="px-8 py-6 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between">
+                            <div>
+                              <h4 className="text-sm font-black text-amber-400 uppercase tracking-widest">Terdeteksi {postImportAudit.ghosts.length} Akun Hantu</h4>
+                              <p className="text-xs text-amber-500/70 font-medium">Akun ini memiliki role SISWA tapi tidak terhubung ke record master manapun.</p>
+                            </div>
+                            <button 
+                              onClick={() => setUidsToDelete(postImportAudit.ghosts.map((u: any) => u.uid))}
+                              className="px-6 py-2 bg-amber-500/20 hover:bg-amber-500 text-amber-400 hover:text-white rounded-xl text-[10px] font-black uppercase transition-all"
+                            >
+                              Tandai Semua
+                            </button>
+                          </div>
+                          <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[400px] overflow-y-auto">
+                            {postImportAudit.ghosts.map((u: any) => (
+                              <label 
+                                key={u.uid} 
+                                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all cursor-pointer ${
+                                  uidsToDelete.includes(u.uid) 
+                                    ? "bg-amber-500/10 border-amber-500/50" 
+                                    : "bg-slate-950 border-slate-800 hover:border-slate-700"
+                                }`}
+                              >
+                                <input 
+                                  type="checkbox" 
+                                  checked={uidsToDelete.includes(u.uid)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) setUidsToDelete(prev => [...prev, u.uid]);
+                                    else setUidsToDelete(prev => prev.filter(id => id !== u.uid));
+                                  }}
+                                  className="w-5 h-5 rounded-lg border-amber-900/50 bg-slate-950 text-amber-600 focus:ring-amber-500"
+                                />
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-bold text-white">{u.nama}</span>
+                                  <span className="text-[10px] font-black text-slate-500 uppercase">{u.role}</span>
+                                </div>
+                              </label>
+                            ))}
+                          </div>
+                          <div className="p-8 bg-slate-950/50 border-t border-amber-500/20 flex justify-between items-center">
+                            <p className="text-sm text-slate-400">Total dipilih: <span className="text-amber-400 font-bold">{uidsToDelete.length}</span> user</p>
+                            <button 
+                              onClick={handlePostCleanup}
+                              disabled={uidsToDelete.length === 0 || isSaving}
+                              className="px-8 py-4 bg-red-600 hover:bg-red-500 disabled:opacity-30 text-white font-black rounded-2xl transition-all shadow-xl shadow-red-600/20 uppercase text-xs tracking-widest flex items-center gap-3"
+                            >
+                              <Trash2 size={18} /> Bersihkan Akun Hantu
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="py-20 text-center bg-emerald-500/5 border border-emerald-500/20 rounded-[32px]">
+                          <UserCheck size={64} className="text-emerald-500/30 mx-auto mb-6" />
+                          <h4 className="text-xl font-black text-emerald-400 uppercase tracking-widest">Selesai & Bersih!</h4>
+                          <p className="text-slate-500 font-medium">Seluruh data telah sinkron. Tidak ada akun hantu terdeteksi.</p>
+                          <button 
+                            onClick={() => setPostImportAudit(null)}
+                            className="mt-8 px-8 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all"
+                          >
+                            Tutup Dashboard Audit
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

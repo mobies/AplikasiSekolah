@@ -1,7 +1,7 @@
 # TODO — Daftar Tugas Aktif
 
 > **Sinkron dengan:** [ROADMAP.md](./ROADMAP.md) & [AI_GUIDELINES.md](./AI_GUIDELINES.md)  
-> **Update terakhir:** 2026-05-09
+> **Update terakhir:** 2026-05-10
 
 ---
 
@@ -80,5 +80,7 @@
 - [x] **CORS Fix** — Semua fungsi onCall sudah bersih dari `cors: true`
 - [x] **Node.js Upgrade** — Upgrade dari Node 20 ke Node 22
 - [x] **Trigger Cost Optimization** — Refactor trigger untuk hindari billing spike saat impor massal
+- [x] **Post-Import User Audit** — Deteksi dan pembersihan "Siswa Hantu" via Cloud Function
+- [x] **Centralized User Management** — Migrasi kontrol populasi user dari Admin Sekolah ke Owner Dashboard (Cost Optimization)
 - [x] **DB_MAP Update** — Dokumentasi lengkap semua path database terbaru
 - [x] **AI_GUIDELINES** — Panduan lengkap untuk kontinuitas AI development

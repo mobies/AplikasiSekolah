@@ -16,7 +16,8 @@ import {
   AlertCircle,
   Trash2,
   GraduationCap,
-  BookOpen
+  BookOpen,
+  ShieldCheck
 } from "lucide-react";
 import { auth, functions, rtdb } from "@/lib/firebase";
 import { httpsCallable } from "firebase/functions";
@@ -422,8 +423,11 @@ export default function OwnerDashboard() {
           <div className="px-3 py-2 bg-indigo-600/10 text-indigo-400 rounded-xl flex items-center gap-3">
             <LayoutDashboard className="w-5 h-5" /> Dashboard
           </div>
+          <Link href="/owner/manage-users" className="px-3 py-2 text-slate-500 hover:bg-slate-900 rounded-xl flex items-center gap-3 transition-colors cursor-pointer">
+            <Users className="w-5 h-5" /> Populasi User
+          </Link>
           <Link href="/owner/users" className="px-3 py-2 text-slate-500 hover:bg-slate-900 rounded-xl flex items-center gap-3 transition-colors cursor-pointer">
-            <Users className="w-5 h-5" /> Pengguna
+            <ShieldCheck className="w-5 h-5" /> Admin Sekolah
           </Link>
           <Link href="/owner/settings" className="px-3 py-2 text-slate-500 hover:bg-slate-900 rounded-xl flex items-center gap-3 transition-colors cursor-pointer">
             <Settings className="w-5 h-5" /> Pengaturan
@@ -582,6 +586,7 @@ export default function OwnerDashboard() {
                                     {school.expireAt ? new Date(school.expireAt).toLocaleDateString('id-ID') : '-'}
                                   </p>
                                 </div>
+                                <button onClick={() => router.push(`/owner/manage-users?npsn=${school.id}`)} className="p-2 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-xl transition-all" title="Kelola Populasi User"><Users className="w-5 h-5" /></button>
                                 <button onClick={() => handleApprove(school.id)} className="p-2 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500 hover:text-white rounded-xl transition-all" title="Re-approve / Sync"><Clock className="w-5 h-5" /></button>
                                 <button onClick={() => handleManageSubscription(school)} className="p-2 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500 hover:text-white rounded-xl transition-all" title="Kelola Layanan"><Settings className="w-5 h-5" /></button>
                                 <button onClick={() => handleDeactivate(school.id)} className="p-2 bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white rounded-xl transition-all" title="Nonaktifkan"><AlertCircle className="w-5 h-5" /></button>

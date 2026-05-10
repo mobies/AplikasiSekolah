@@ -10,19 +10,18 @@ Sistem ini menggunakan arsitektur **Serverless Multi-Tenant**. Data antar sekola
 - **Frontend**: Next.js 14 (App Router), Tailwind CSS, Framer Motion, Lucide React.
 - **Backend**: Firebase Cloud Functions v2 (Node.js/TypeScript).
 - **Database**: 
-  - **Cloud Firestore**: Data utama (Schools, Users, Academic).
-  - **Realtime Database (RTDB)**: Konfigurasi sistem, Dynamic CORS, Cache Status.
+  - **Realtime Database (RTDB)**: Data utama, konfigurasi sistem, Dynamic CORS, dan Cache Status.
 - **Auth**: Firebase Authentication (Google Sign-In).
 - **Deployment**: Firebase Hosting & Functions.
 
 ## 4. Arsitektur Sistem & Alur Komunikasi
 - **Frontend** berkomunikasi dengan **Backend** hanya melalui **Callable Cloud Functions**.
-- **Backend** (Admin SDK) memiliki akses penuh ke Firestore dan RTDB.
-- **Frontend** memiliki akses terbatas ke Firestore/RTDB sesuai Security Rules yang ketat.
+- **Backend** (Admin SDK) memiliki akses penuh ke RTDB.
+- **Frontend** memiliki akses terbatas ke RTDB sesuai Security Rules yang ketat.
 
 ## 5. Flow Autentikasi & Database
 - Login menggunakan Google SSO.
-- Role User dicek via Cloud Function `checkUserRole` yang memvalidasi data di RTDB (Owner) dan Firestore (School Admin).
+- Role User dicek via Cloud Function `checkUserRole` yang memvalidasi data di RTDB (Owner & School Admin).
 - Status pendaftaran dicatat di RTDB `registrations/{uid}` untuk respon instan di UI.
 
 ## 6. Daftar Modul Penting
@@ -37,4 +36,4 @@ Sistem ini menggunakan arsitektur **Serverless Multi-Tenant**. Data antar sekola
 ## 9. Hal yang TIDAK BOLEH Diubah Tanpa Izin
 - **Struktur RTDB `system/config/allowedOrigins`**: Merusak ini akan mematikan akses CORS seluruh aplikasi.
 - **Logic `validateOrigin` di Backend**: Jantung keamanan API.
-- **Struktur Document ID Firestore (NPSN)**: Digunakan sebagai kunci unik antar sekolah.
+- **Struktur Document ID RTDB (NPSN)**: Digunakan sebagai kunci unik antar sekolah.

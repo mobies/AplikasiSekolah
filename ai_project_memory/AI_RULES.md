@@ -5,6 +5,8 @@
 - **Jangan Mengubah Struktur Database**: Penambahan field diperbolehkan, namun penghapusan atau penggantian nama path/collection wajib dikonfirmasi.
 - **Jangan Rename API/Functions**: Nama Cloud Functions harus tetap konsisten untuk menjaga integrasi frontend/backend.
 - **Backward Compatibility**: Pastikan perubahan baru tidak merusak user yang sudah ada atau data lama.
+- **Git Protocol**: DILARANG melakukan `git commit` atau `git push` ke GitHub tanpa perintah eksplisit dari user.
+- **Efficient Deployment**: Saat melakukan deploy functions ke Firebase, gunakan flag `--only functions:namaFungsi` untuk men-deploy hanya bagian yang diubah/ditambah saja agar proses lebih cepat.
 
 ## 2. Standar Coding & Security
 - **Error Logging**: Selalu gunakan `console.error` atau logging formal pada blok `catch`.

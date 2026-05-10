@@ -13,9 +13,11 @@ import {
   School, 
   Bell, 
   Search,
+  Archive,
   CheckCircle2,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Link as LinkIcon
 } from "lucide-react";
 import { auth, functions, rtdb } from "@/lib/firebase";
 import { httpsCallable } from "firebase/functions";
@@ -185,6 +187,8 @@ export default function SchoolAdminDashboard() {
               <LinkItem icon={<Users size={20} />} label="Data Siswa" href={`/school/${npsn}/students`} />
               <LinkItem icon={<GraduationCap size={20} />} label="Data Guru" href={`/school/${npsn}/teachers`} />
               <LinkItem icon={<BookOpen size={20} />} label="Data Rombel" href={`/school/${npsn}/rombel`} />
+              <LinkItem icon={<Archive size={20} />} label="Arsip Siswa" href={`/school/${npsn}/archive`} />
+              <LinkItem icon={<LinkIcon size={20} />} label="Link Undangan" href={`/school/${npsn}/invitations`} />
               <LinkItem icon={<Wallet size={20} />} label="Keuangan" />
               <LinkItem icon={<Settings size={20} />} label="Pengaturan" href={`/school/${npsn}/settings`} />
             </nav>

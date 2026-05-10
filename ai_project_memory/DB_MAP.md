@@ -1,4 +1,4 @@
-# Database Map — Firebase Realtime Database (NPSN-Centric)
+# Database Map — Firebase Realtime Database Only (NPSN-Centric)
 
 > **Last Updated:** 2026-05-09  
 > **Status:** Sinkron dengan kode produksi terkini.
@@ -38,9 +38,13 @@
 │   │
 │   ├── rombel/
 │   │   └── {NPSN}/
-│   │       └── {tahunAjaran}/    (format: "2025/2026")
+│   │       └── {tahunAjaran}/    (format: "2025_2026")
 │   │           └── {classId}/
-│   │               └── {uid}    → Anggota rombel (nama, joinedAt)
+│   │               └── {nisn}    → Anggota rombel (nama, joinedAt, uid)
+│   │
+│   ├── unrombel/
+│   │   └── {NPSN}/
+│   │       └── {nisn}            → Siswa yang belum masuk rombel (nama, uid, lastUpdated)
 │   │
 │   ├── reference/
 │   │   └── {NPSN}/

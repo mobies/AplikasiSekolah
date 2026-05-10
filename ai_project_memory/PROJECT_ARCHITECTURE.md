@@ -8,9 +8,7 @@
        v
 [ CLOUD FUNCTIONS ] <---> [ ADMIN SDK ]
        |                      |
-       +----------------------+------> [ FIRESTORE (Main Data) ]
-       |                      |
-       +----------------------+------> [ RTDB (Config & Cache) ]
+       +----------------------+------> [ RTDB (Main Data, Config & Cache) ]
 ```
 
 ## 2. Struktur Project
@@ -35,7 +33,7 @@
 4. checkUserRole performs:
    a. validateOrigin (CORS check via RTDB)
    b. check UID in RTDB owner/lists/ (Owner role)
-   c. if not found, check Email in Firestore schools/ (School Admin role)
+   c. check UID/NPSN in RTDB schools/lists/ (School Admin role)
 5. Backend returns { role, data }
 6. Frontend redirects to /owner/dashboard or /admin/dashboard
 ```

@@ -1,5 +1,14 @@
 # Changelog - Riwayat Perubahan
 
+## [2026-05-10] - Sistem Link Undangan & Optimasi Rombel
+*   Mengimplementasikan fungsi backend `generateInvitationLink`, `validateInvitationToken`, dan `registerViaInvitation`.
+*   Membangun antarmuka Manajemen Undangan di Dashboard Admin Sekolah.
+*   Membangun halaman pendaftaran publik via token (`/join/[token]`).
+*   Optimasi Bandwidth RTDB: Pemisahan data Rombel antara metadata ringan (`/schools/rombel/lists`) dan data siswa lengkap (`/schools/rombel/{NPSN}`).
+*   Frontend Rombel Page: Implementasi loading on-demand untuk data siswa.
+*   Trigger Otomatis: `onRombelChange` mensinkronkan jumlah siswa (`studentCount`) ke node metadata secara real-time.
+*   Otomasi Tahun Ajaran aktif berdasarkan tanggal hari ini (format `YYYY_YYYY`).
+
 ## [2026-05-08]
 ### Added
 - [x] **Dashboard Admin Sekolah**: Pembuatan rute `/school/[npsn]/dashboard` dengan desain premium.

@@ -64,6 +64,9 @@ Aplikasi Sekolah/
 - **Kelas (`reference/classroom`)**: Ruang fisik atau referensi tingkatan kosong yang *dapat* diisi oleh siswa.
 - **Rombel (`rombel`)**: Rombongan Belajar, yakni Kelas yang *telah terisi* oleh siswa pada tahun ajaran tertentu. UI Manajemen Kelas disajikan dalam bentuk dialog di dalam halaman Data Rombel.
 
+### 🔴 GIT & WORKFLOW
+- **JANGAN** melakukan `git commit` atau `git push` secara otomatis setelah setiap tugas. Tunggu instruksi eksplisit dari USER sebelum melakukan commit dan push.
+
 ### 🔴 DATABASE — KRITIS
 
 | Aturan | Detail |

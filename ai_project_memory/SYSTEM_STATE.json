@@ -14,13 +14,13 @@
   ],
   "activeTasks": [
     "Build Admin Dashboard UI",
-    "Implement Firestore Security Rules per school"
+    "Implement RTDB Security Rules per school"
   ],
   "architecture": {
     "type": "Serverless Multi-tenant",
     "frontend": "Next.js 14",
     "backend": "Cloud Functions v2 (Node.js 20)",
-    "database": "Firestore + RTDB",
+    "database": "Realtime Database (RTDB) only (Temporary)",
     "auth": "Google SSO"
   },
   "deployment": {
