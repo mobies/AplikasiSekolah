@@ -1,68 +1,37 @@
 {
-  "alumni": {
-    "12345678": {
-      "2025": {
-        "0857300098": {
-          "classId": "GMTSN1-GRT",
-          "graduatedAt": 1778339516403,
-          "lastImported": 1778319648446,
-          "nama": "Cucu Mardiyah",
-          "tahunLulus": "2025",
-          "uid": "wqRdusjvfbaw68hvlE2w6NISYPA3"
+  "detail": {
+    "students": {
+      "12345678": {
+        "12345678": {
+          "address": {
+            "city": "KABUPATEN CIAMIS",
+            "district": "CIJEUNGJING",
+            "map": "https://www.google.com/maps?q=-7.277335632778468,108.16704475866572",
+            "province": "JAWA BARAT",
+            "rt": "12",
+            "rtrw": "12/1",
+            "rw": "1",
+            "street": "Ciamis",
+            "village": "DEWASARI"
+          },
+          "blood_type": "AB",
+          "dob": "1978-12-31",
+          "gender": "L",
+          "pob": "TASIKMALAYA",
+          "updatedAt": 1778398061730
         }
       }
     }
   },
-  "inactive_students": {
-    "berhenti": {
-      "12345678": {
-        "8573000985": {
+  "graduated": {
+    "12345678": {
+      "2025": {
+        "1976061620": {
           "classId": "GMTSN1-GRT",
-          "inactiveAt": 1778339492517,
-          "inactiveReason": "berhenti",
-          "lastImported": 1778319648446,
-          "nama": "Cici",
-          "timestamp": 1778339492517,
-          "uid": "qnzk5trLQVdf0T7jCgzkJQ5gqfH2"
-        }
-      }
-    },
-    "cuti": {
-      "12345678": {
-        "0123456789": {
-          "classId": "GMTSN1-GRT",
-          "inactiveAt": 1778339456883,
-          "inactiveReason": "cuti",
-          "lastImported": 1778319648446,
-          "nama": "Ati K",
-          "timestamp": 1778339456883,
-          "uid": "m7zW4PO6hSbTz2LB9nhaxAgaS393"
-        }
-      }
-    },
-    "pindah": {
-      "12345678": {
-        "0813237800": {
-          "classId": "GMTSN1-GRT",
-          "inactiveAt": 1778339475585,
-          "inactiveReason": "pindah",
-          "lastImported": 1778319648446,
-          "nama": "Asep Sulaeman",
-          "timestamp": 1778339475585,
-          "uid": "1nDFZfBtMbde9QywMsSL1cu2oXs1"
-        }
-      }
-    },
-    "scorsing": {
-      "12345678": {
-        "0813229772": {
-          "classId": "GMTSN1-GRT",
-          "inactiveAt": 1778339504075,
-          "inactiveReason": "scorsing",
-          "lastImported": 1778319648446,
-          "nama": "Cepi Nugraha",
-          "timestamp": 1778339504075,
-          "uid": "X3XMWNzFtrOiHRwLesMX9i1aKIC3"
+          "graduatedAt": 1778398216690,
+          "lastImported": 1778387816453,
+          "nama": "Yadi Mulyadi",
+          "uid": "Kt4gXSmTrpSZkzLzrw98y3sRHNc2"
         }
       }
     }
@@ -84,9 +53,8 @@
     "12345678": {
       "classroom": {
         "GMTSN1-GRT": {
-          "className": "GURU-MTS",
-          "status": "active",
-          "updatedAt": 1778328314534
+          "className": "GMTSN1-GRT",
+          "status": "active"
         },
         "IX-4": {
           "className": "IX-4",
@@ -102,71 +70,429 @@
         },
         "XI-IPA-3": {
           "className": "XI-IPA-3",
-          "createdAt": 1778328339283
+          "status": "active",
+          "updatedAt": 1778389363932
         }
       }
     }
   },
   "rombel": {
-    "12345678": {
-      "2025_2026": {
-        "IX-4": {
-          "12345678": {
-            "joinedAt": 1778319648446,
-            "nama": "Ranie Oktavianty",
-            "uid": "MSq2Q1yh4HXDtuI3g6aNNj14zjU2"
-          },
-          "1212121212": {
-            "joinedAt": 1778331063596,
-            "nama": "Jaka Tingkir",
-            "uid": "SqWyBgtKD1elwNAUTpIw6Eb8S082"
-          },
-          "1234567891": {
-            "joinedAt": 1778324119189,
-            "nama": "Acep",
-            "uid": "0mpuQTUa2dNbwVTy5IHx1PN15D22"
-          },
-          "0852216883": {
-            "joinedAt": 1778324123895,
-            "nama": "Ade Yani",
-            "uid": "FZIapetcVrhSrEqWODA9FFmYYlC3"
+    "archieved": {
+      "12345678": {
+        "berhenti": {
+          "1977050920": {
+            "archievedAt": 1778398228202,
+            "classId": "GMTSN1-GRT",
+            "nama": "Eli Kholisoh",
+            "uid": "MWFX462GphT3EsPDr9sLJ9CVRI22"
           }
         },
-        "XI-IPA-1": {
-          "111111111": {
-            "joinedAt": 1778329615021,
-            "nama": "Nai Nurwanti",
-            "uid": "LpaTmtnzELhfTQMuKgQ92vQGspu1"
+        "cuti": {
+          "1977113020": {
+            "archievedAt": 1778398244772,
+            "classId": "GMTSN1-GRT",
+            "nama": "Risnawati",
+            "uid": "EDB1dYmDwIRtTJKZkoZbBc6AiqS2"
           }
         },
-        "XI-IPA-2": {
-          "25267001": {
-            "joinedAt": 1778319648446,
-            "nama": "M. Azam Ernest",
-            "uid": "kMKIdEJqc5M1EIXegP8qNpejMa92"
-          },
-          "212210101": {
-            "joinedAt": 1778319648446,
-            "nama": "Ariya Mobies 413",
-            "uid": "aAkgQxBep2PMqSw5ytJeZoUDy053"
-          },
-          "212210777": {
-            "joinedAt": 1778319648446,
-            "nama": "Ariya Mobies 414",
-            "uid": "7fBcGcLFegU9ggBGptUzNCbTdpq2"
-          },
-          "212210873": {
-            "joinedAt": 1778319648446,
-            "nama": "Mobies Corps",
-            "uid": "wMH9ZmCnKSWc89yYQhpNWtVcBrg2"
+        "pindah": {
+          "1977080420": {
+            "archievedAt": 1778398236711,
+            "classId": "GMTSN1-GRT",
+            "nama": "Wina Wiwaha",
+            "uid": "VT3nvxocE8ZKLefJNyyXfTWRQdW2"
           }
         },
-        "XI-IPA-3": {
-          "1111111111": {
-            "joinedAt": 1778339529451,
-            "nama": "Didin Doang",
-            "uid": "iKGIXSeVs9ZLC3StCwob8YkJ6Nv2"
+        "skorsing": {
+          "1981111420": {
+            "archievedAt": 1778398252251,
+            "classId": "GMTSN1-GRT",
+            "nama": "Irma",
+            "uid": "S3ZDs44PzYSRK8XfK4iVO8EAw5y1"
           }
+        }
+      }
+    },
+    "graduated": {
+      "12345678": {
+        "2025": {
+          "1976061620": {
+            "classId": "GMTSN1-GRT",
+            "graduatedAt": 1778398216690,
+            "nama": "Yadi Mulyadi",
+            "uid": "Kt4gXSmTrpSZkzLzrw98y3sRHNc2"
+          }
+        }
+      }
+    },
+    "lists": {
+      "12345678": {
+        "2025": {
+          "GMTSN1-GRT": {
+            "lastUpdate": 1778398252898,
+            "name": "GMTSN1-GRT",
+            "studentCount": 41
+          },
+          "IX-4": {
+            "lastUpdate": 1778388716809,
+            "name": "IX-4",
+            "studentCount": 8
+          },
+          "XI-IPA-1": {
+            "lastUpdate": 1778387818828,
+            "name": "XI-IPA-1",
+            "studentCount": 4
+          },
+          "XI-IPA-2": {
+            "lastUpdate": 1778387818706,
+            "name": "XI-IPA-2",
+            "studentCount": 4
+          }
+        },
+        "undefined": {
+          "IX-4": {
+            "lastUpdate": 1778398475656,
+            "name": "IX-4",
+            "studentCount": 1
+          }
+        }
+      }
+    },
+    "members": {
+      "12345678": {
+        "2025": {
+          "GMTSN1-GRT": {
+            "1987082520": {
+              "joinedAt": 1778387816453,
+              "nama": "Han Han Hamdani",
+              "uid": "fxh2pfs1PNbVVQWTutXBS4YBrk72"
+            },
+            "1989012320": {
+              "joinedAt": 1778387816453,
+              "nama": "Fen",
+              "uid": "YuPnKyijNbRU1MnABGM5xWJbsiC2"
+            },
+            "1990122720": {
+              "joinedAt": 1778387816453,
+              "nama": "Wina",
+              "uid": "y71tbIvl9AMsjPlnFnQgofV38Te2"
+            },
+            "1996110920": {
+              "joinedAt": 1778387816453,
+              "nama": "Imam Maulana ",
+              "uid": "rHPOflec4UMvtggHeEdJjjL8y6z1"
+            },
+            "2005012003": {
+              "joinedAt": 1778387816453,
+              "nama": "Yanti ",
+              "uid": "cJZVghx018aWns48eHGKJFqjONn2"
+            },
+            "2113563466": {
+              "joinedAt": 1778387816453,
+              "nama": "N. Jenariah",
+              "uid": "s2CmjwgSbrcFZWhAVvRTZCHLvS22"
+            },
+            "2130360149": {
+              "joinedAt": 1778387816453,
+              "nama": "Fathiyah Nikmah",
+              "uid": "0Px8w2l5r4fjdoctQkGD5qp57mA2"
+            },
+            "2233445566": {
+              "joinedAt": 1778387816453,
+              "nama": "C. Mardiyah",
+              "uid": "BwFfbFOBLhbTcvGgqP5i7Zvm3fI3"
+            },
+            "012345678": {
+              "joinedAt": 1778387816453,
+              "nama": "Arief Saeful Bahri",
+              "uid": "b1RTohDDSvfJvHQCYDaR2eG8Az43"
+            },
+            "0123446789": {
+              "joinedAt": 1778387816453,
+              "nama": "Sinta Mardhikawati ",
+              "uid": "nPAawGMj7xMRADT4GrUwIE2ApNv1"
+            },
+            "0123456789": {
+              "joinedAt": 1778387816453,
+              "nama": "Ati K",
+              "uid": "m7zW4PO6hSbTz2LB9nhaxAgaS393"
+            },
+            "0812208620": {
+              "joinedAt": 1778387816453,
+              "nama": "Ai Lalah",
+              "uid": "rBc4lQIpfiVZcbL0HKCj2PgqAvR2"
+            },
+            "0812225077": {
+              "joinedAt": 1778387816453,
+              "nama": "Syifa Tsamrotul Fuadi",
+              "uid": "m5qwjBAdmBXvUtaiOFEHEYqghQK2"
+            },
+            "0812345737": {
+              "joinedAt": 1778387816453,
+              "nama": "Husna Andi Kusumah Selamet",
+              "uid": "e0IFTtqVP0TtrvvbCpGRfmGFyR93"
+            },
+            "0812401201": {
+              "joinedAt": 1778387816453,
+              "nama": "Risna Iswenti",
+              "uid": "2S19kGqmwYb1BkrWhGd1aNRxPkJ2"
+            },
+            "0813002961": {
+              "joinedAt": 1778387816453,
+              "nama": "Elis Nurkairiyati",
+              "uid": "ExHYPWwmFlVjHJHj8crsrwNvdfV2"
+            },
+            "0813202483": {
+              "joinedAt": 1778387816453,
+              "nama": "Helmi H Lestari",
+              "uid": "tDEBTh8ktAQ1qfyWcSzs0exmA0m2"
+            },
+            "0813229772": {
+              "joinedAt": 1778387816453,
+              "nama": "Cepi Nugraha",
+              "uid": "X3XMWNzFtrOiHRwLesMX9i1aKIC3"
+            },
+            "0813233198": {
+              "joinedAt": 1778387816453,
+              "nama": "Debi Nurbaeni",
+              "uid": "XnVUi8XzFVWoiSQNlcEOkxlcmEk2"
+            },
+            "0813235002": {
+              "joinedAt": 1778387816453,
+              "nama": "Yosi Susilawati",
+              "uid": "AAsUkzDnP6Nc4yfUE9C4vGWp5Mo2"
+            },
+            "0813237800": {
+              "joinedAt": 1778387816453,
+              "nama": "Asep Sulaeman",
+              "uid": "1nDFZfBtMbde9QywMsSL1cu2oXs1"
+            },
+            "0821150175": {
+              "joinedAt": 1778387816453,
+              "nama": "Rimayah",
+              "uid": "EpkAjRbNjUgIkwqkGKfQp1juCKo1"
+            },
+            "0821197281": {
+              "joinedAt": 1778387816453,
+              "nama": "Lia Widianti",
+              "uid": "4ysQTEw3OwS1s2dgodepRjkH3cW2"
+            },
+            "0821218399": {
+              "joinedAt": 1778387816453,
+              "nama": "Reni Rahmawati",
+              "uid": "UhzNCANN0nSaLtJzDSoNFPbdZEr1"
+            },
+            "0823171961": {
+              "joinedAt": 1778387816453,
+              "nama": "Ayoe",
+              "uid": "hStNdJkgOHP0WhRbdmIjajvRrD82"
+            },
+            "0851618585": {
+              "joinedAt": 1778387816453,
+              "nama": "Toni",
+              "uid": "6C0bgObPfBU1SebYFUSWjT4XGir2"
+            },
+            "0852208002": {
+              "joinedAt": 1778387816453,
+              "nama": "Yana Mulyana",
+              "uid": "tj95R7LHBOa7ZXADwlxrPyPrWiw2"
+            },
+            "0852216883": {
+              "joinedAt": 1778387816453,
+              "nama": "Ade Yani",
+              "uid": "FZIapetcVrhSrEqWODA9FFmYYlC3"
+            },
+            "0852223239": {
+              "joinedAt": 1778387816453,
+              "nama": "Eva Yuliana",
+              "uid": "KEIMFIaL5GM2JA5X9t8AwF31NFj1"
+            },
+            "0853217315": {
+              "joinedAt": 1778387816453,
+              "nama": "Herawati",
+              "uid": "CkxLrBzuRmf0bXU8W0UBfIuKFlH2"
+            },
+            "0857213841": {
+              "joinedAt": 1778387816453,
+              "nama": "Ismi Meilasari ",
+              "uid": "p1j3FDPJXMZ1oubjw9iG3TeAY343"
+            },
+            "0857300098": {
+              "joinedAt": 1778387816453,
+              "nama": "Cucu Mardiyah",
+              "uid": "wqRdusjvfbaw68hvlE2w6NISYPA3"
+            },
+            "0895000949": {
+              "joinedAt": 1778387816453,
+              "nama": "Reza Nurhusna",
+              "uid": "bPz8yS2oM8WHdnmJ5EfZtIarB3p2"
+            },
+            "0895123456": {
+              "joinedAt": 1778387816453,
+              "nama": "Imas Winaya",
+              "uid": "c4Uc4erfJxQb6sJzP1Jm4UA6lIH3"
+            },
+            "0895300794": {
+              "joinedAt": 1778387816453,
+              "nama": "Reza Nurhusna",
+              "uid": "EyIOh4zksta0WyHmg6deZ24nsW02"
+            },
+            "0895701193": {
+              "joinedAt": 1778387816453,
+              "nama": "Mutakin",
+              "uid": "UcltGx8clLgNSXOiMws8Fm5rZ1V2"
+            },
+            "0897674788": {
+              "joinedAt": 1778387816453,
+              "nama": "Anis Andriani",
+              "uid": "eIxiBMuZGKVcZdJkH0OHc6mPJ5N2"
+            },
+            "0898771160": {
+              "joinedAt": 1778387816453,
+              "nama": "Erna Sri Listiana ",
+              "uid": "rgpJYQrN9OhWAfkeWHHMhhDCRqG3"
+            },
+            "5224863526": {
+              "joinedAt": 1778387816453,
+              "nama": "Selly Ys",
+              "uid": "Cdj9QWZFVhRybvz6zF22q16Kfh73"
+            },
+            "7747134819": {
+              "joinedAt": 1778387816453,
+              "nama": "Nani Triana",
+              "uid": "5HZkCXP7YAeC4VhroNX4aahXgdc2"
+            },
+            "8573000985": {
+              "joinedAt": 1778387816453,
+              "nama": "Cici",
+              "uid": "qnzk5trLQVdf0T7jCgzkJQ5gqfH2"
+            }
+          },
+          "IX-4": {
+            "12345678": {
+              "joinedAt": 1778388716645,
+              "nama": "Ranie Oktavianty",
+              "uid": "MSq2Q1yh4HXDtuI3g6aNNj14zjU2"
+            },
+            "1011040789": {
+              "joinedAt": 1778388716645,
+              "nama": "Neng Ismi",
+              "uid": "l5HnMhvu5wWxQJ0uhX8zjdNqGhp2"
+            },
+            "1111111111": {
+              "joinedAt": 1778388716645,
+              "nama": "Didin Doang",
+              "uid": "iKGIXSeVs9ZLC3StCwob8YkJ6Nv2"
+            },
+            "1234554321": {
+              "joinedAt": 1778388716645,
+              "nama": "Joni Fr",
+              "uid": "zNJ1ygtf1ZbeUfFLnH5Sc3vOam13"
+            },
+            "1234567890": {
+              "joinedAt": 1778388716645,
+              "nama": "Tatang",
+              "uid": "kRNz9dyBg9N0e7naLXEgiQLqVVs2"
+            },
+            "1234567891": {
+              "joinedAt": 1778388716645,
+              "nama": "Acep",
+              "uid": "0mpuQTUa2dNbwVTy5IHx1PN15D22"
+            },
+            "1967031119": {
+              "joinedAt": 1778388716645,
+              "nama": "Nyai Suhara",
+              "uid": "N3t54uSeB2QFvP2mkxwUCmakJ9E2"
+            },
+            "1970102419": {
+              "joinedAt": 1778388716645,
+              "nama": "Epi",
+              "uid": "aeQpVZVIubVasWxV55QSX4JUjg42"
+            }
+          },
+          "XI-IPA-1": {
+            "111111111": {
+              "joinedAt": 1778387816453,
+              "nama": "Nai Nurwanti",
+              "uid": "LpaTmtnzELhfTQMuKgQ92vQGspu1"
+            },
+            "1212121212": {
+              "joinedAt": 1778387816453,
+              "nama": "Jaka Tingkir",
+              "uid": "SqWyBgtKD1elwNAUTpIw6Eb8S082"
+            },
+            "1234567892": {
+              "joinedAt": 1778387816453,
+              "nama": "M Sandy",
+              "uid": "PlaPpHjeCPfRG4mO7yDj3L5hCEE3"
+            },
+            "1984043020": {
+              "joinedAt": 1778387816453,
+              "nama": "Eva P",
+              "uid": "CLtkFqQBRuMbGYnLZgkb2Oz34X53"
+            }
+          },
+          "XI-IPA-2": {
+            "25267001": {
+              "joinedAt": 1778387816453,
+              "nama": "M. Azam Ernest",
+              "uid": "kMKIdEJqc5M1EIXegP8qNpejMa92"
+            },
+            "212210101": {
+              "joinedAt": 1778387816453,
+              "nama": "Ariya Mobies 413",
+              "uid": "aAkgQxBep2PMqSw5ytJeZoUDy053"
+            },
+            "212210777": {
+              "joinedAt": 1778387816453,
+              "nama": "Ariya Mobies 414",
+              "uid": "7fBcGcLFegU9ggBGptUzNCbTdpq2"
+            },
+            "212210873": {
+              "joinedAt": 1778387816453,
+              "nama": "Mobies Corps",
+              "uid": "wMH9ZmCnKSWc89yYQhpNWtVcBrg2"
+            }
+          }
+        },
+        "undefined": {
+          "IX-4": {
+            "1976061620": {
+              "joinedAt": 1778398474544,
+              "nama": "Yadi Mulyadi",
+              "restoredAt": 1778398474544,
+              "uid": "Kt4gXSmTrpSZkzLzrw98y3sRHNc2"
+            }
+          }
+        }
+      }
+    },
+    "unrombel": {
+      "12345678": {
+        "1971102120": {
+          "nama": "Eneng Nurhayani",
+          "removedAt": 1778388973751,
+          "uid": "F3lPvLu0kcSB6QInnF7U2mUPVbn1"
+        },
+        "1973052520": {
+          "nama": "Siti Julaeha",
+          "removedAt": 1778388973751,
+          "uid": "tf9ldbfnOiPxz09hfW7DeKsHp5O2"
+        },
+        "1974012320": {
+          "nama": "Rina Rosmayana",
+          "removedAt": 1778388973751,
+          "uid": "PuDYYSdJVPbZl4ha2uJXruAjdlj1"
+        },
+        "1974111320": {
+          "nama": "Siti Patimah",
+          "removedAt": 1778388973751,
+          "uid": "1Sk3fpxVBIguLOkNCwr8DTAcy6v1"
+        },
+        "1974113020": {
+          "nama": "Enden Yuyu Yuhaeti",
+          "removedAt": 1778388973751,
+          "uid": "ULptmqXd9iUWFEjVISB6uL8K4hI2"
         }
       }
     }
@@ -175,388 +501,434 @@
     "12345678": {
       "12345678": {
         "classId": "IX-4",
-        "lastImported": 1778319648446,
+        "foto_path": "https://firebasestorage.googleapis.com/v0/b/appsekolah2026.firebasestorage.app/o/uploads%2Ffoto%2Fsiswa%2F12345678%2F12345678?alt=media&token=f7284081-eac7-499f-9e20-b3dbdeb14131",
+        "lastImported": 1778387816453,
         "nama": "Ranie Oktavianty",
-        "uid": "MSq2Q1yh4HXDtuI3g6aNNj14zjU2"
+        "phone": "082126497788",
+        "thumb_path": "https://firebasestorage.googleapis.com/v0/b/appsekolah2026.firebasestorage.app/o/uploads%2Fthumb%2Fsiswa%2F12345678%2F12345678?alt=media&token=5ac665d1-aa0e-44b7-a04f-f12dfb2d1fb6",
+        "uid": "MSq2Q1yh4HXDtuI3g6aNNj14zjU2",
+        "updatedAt": 1778398061730
       },
       "25267001": {
         "classId": "XI-IPA-2",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "M. Azam Ernest",
         "uid": "kMKIdEJqc5M1EIXegP8qNpejMa92"
       },
       "111111111": {
         "classId": "XI-IPA-1",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Nai Nurwanti",
         "uid": "LpaTmtnzELhfTQMuKgQ92vQGspu1"
       },
       "212210101": {
         "classId": "XI-IPA-2",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Ariya Mobies 413",
         "uid": "aAkgQxBep2PMqSw5ytJeZoUDy053"
       },
       "212210777": {
         "classId": "XI-IPA-2",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Ariya Mobies 414",
         "uid": "7fBcGcLFegU9ggBGptUzNCbTdpq2"
       },
       "212210873": {
         "classId": "XI-IPA-2",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Mobies Corps",
         "uid": "wMH9ZmCnKSWc89yYQhpNWtVcBrg2"
       },
       "1011040789": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Neng Ismi",
         "uid": "l5HnMhvu5wWxQJ0uhX8zjdNqGhp2"
       },
       "1111111111": {
-        "classId": "XI-IPA-3",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Didin Doang",
         "uid": "iKGIXSeVs9ZLC3StCwob8YkJ6Nv2"
       },
       "1212121212": {
-        "classId": "IX-4",
-        "lastImported": 1778319648446,
+        "classId": "XI-IPA-1",
+        "lastImported": 1778387816453,
         "nama": "Jaka Tingkir",
         "uid": "SqWyBgtKD1elwNAUTpIw6Eb8S082"
       },
       "1234554321": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Joni Fr",
         "uid": "zNJ1ygtf1ZbeUfFLnH5Sc3vOam13"
       },
       "1234567890": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Tatang",
         "uid": "kRNz9dyBg9N0e7naLXEgiQLqVVs2"
       },
       "1234567891": {
         "classId": "IX-4",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Acep",
         "uid": "0mpuQTUa2dNbwVTy5IHx1PN15D22"
       },
       "1234567892": {
-        "classId": "Undefined",
-        "lastImported": 1778319648446,
+        "classId": "XI-IPA-1",
+        "lastImported": 1778387816453,
         "nama": "M Sandy",
         "uid": "PlaPpHjeCPfRG4mO7yDj3L5hCEE3"
       },
       "1967031119": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Nyai Suhara",
         "uid": "N3t54uSeB2QFvP2mkxwUCmakJ9E2"
       },
       "1970102419": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "IX-4",
+        "lastImported": 1778387816453,
         "nama": "Epi",
         "uid": "aeQpVZVIubVasWxV55QSX4JUjg42"
       },
       "1971102120": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "UNROBEL",
+        "lastImported": 1778387816453,
         "nama": "Eneng Nurhayani",
         "uid": "F3lPvLu0kcSB6QInnF7U2mUPVbn1"
       },
       "1973052520": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "UNROBEL",
+        "lastImported": 1778387816453,
         "nama": "Siti Julaeha",
         "uid": "tf9ldbfnOiPxz09hfW7DeKsHp5O2"
       },
       "1974012320": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "UNROBEL",
+        "lastImported": 1778387816453,
         "nama": "Rina Rosmayana",
         "uid": "PuDYYSdJVPbZl4ha2uJXruAjdlj1"
       },
       "1974111320": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "UNROBEL",
+        "lastImported": 1778387816453,
         "nama": "Siti Patimah",
         "uid": "1Sk3fpxVBIguLOkNCwr8DTAcy6v1"
       },
       "1974113020": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "classId": "UNROBEL",
+        "lastImported": 1778387816453,
         "nama": "Enden Yuyu Yuhaeti",
         "uid": "ULptmqXd9iUWFEjVISB6uL8K4hI2"
       },
       "1976061620": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
-        "nama": "Yadi Mulyadi",
-        "uid": "Kt4gXSmTrpSZkzLzrw98y3sRHNc2"
-      },
-      "1977050920": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
-        "nama": "Eli Kholisoh",
-        "uid": "MWFX462GphT3EsPDr9sLJ9CVRI22"
-      },
-      "1977080420": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
-        "nama": "Wina Wiwaha",
-        "uid": "VT3nvxocE8ZKLefJNyyXfTWRQdW2"
-      },
-      "1977113020": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
-        "nama": "Risnawati",
-        "uid": "EDB1dYmDwIRtTJKZkoZbBc6AiqS2"
-      },
-      "1981111420": {
-        "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
-        "nama": "Irma",
-        "uid": "S3ZDs44PzYSRK8XfK4iVO8EAw5y1"
+        "classId": "IX-4"
       },
       "1984043020": {
-        "classId": "Undefined",
-        "lastImported": 1778319648446,
+        "classId": "XI-IPA-1",
+        "lastImported": 1778387816453,
         "nama": "Eva P",
         "uid": "CLtkFqQBRuMbGYnLZgkb2Oz34X53"
       },
       "1987082520": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Han Han Hamdani",
         "uid": "fxh2pfs1PNbVVQWTutXBS4YBrk72"
       },
       "1989012320": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Fen",
         "uid": "YuPnKyijNbRU1MnABGM5xWJbsiC2"
       },
       "1990122720": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Wina",
         "uid": "y71tbIvl9AMsjPlnFnQgofV38Te2"
       },
       "1996110920": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Imam Maulana ",
         "uid": "rHPOflec4UMvtggHeEdJjjL8y6z1"
       },
       "2005012003": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Yanti ",
         "uid": "cJZVghx018aWns48eHGKJFqjONn2"
       },
       "2113563466": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "N. Jenariah",
         "uid": "s2CmjwgSbrcFZWhAVvRTZCHLvS22"
       },
       "2130360149": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Fathiyah Nikmah",
         "uid": "0Px8w2l5r4fjdoctQkGD5qp57mA2"
       },
       "2233445566": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "C. Mardiyah",
         "uid": "BwFfbFOBLhbTcvGgqP5i7Zvm3fI3"
       },
       "012345678": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Arief Saeful Bahri",
         "uid": "b1RTohDDSvfJvHQCYDaR2eG8Az43"
       },
       "0123446789": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Sinta Mardhikawati ",
         "uid": "nPAawGMj7xMRADT4GrUwIE2ApNv1"
       },
+      "0123456789": {
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
+        "nama": "Ati K",
+        "uid": "m7zW4PO6hSbTz2LB9nhaxAgaS393"
+      },
       "0812208620": {
-        "classId": "Undefined",
-        "lastImported": 1778319648446,
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
         "nama": "Ai Lalah",
         "uid": "rBc4lQIpfiVZcbL0HKCj2PgqAvR2"
       },
       "0812225077": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Syifa Tsamrotul Fuadi",
         "uid": "m5qwjBAdmBXvUtaiOFEHEYqghQK2"
       },
       "0812345737": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Husna Andi Kusumah Selamet",
         "uid": "e0IFTtqVP0TtrvvbCpGRfmGFyR93"
       },
       "0812401201": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Risna Iswenti",
         "uid": "2S19kGqmwYb1BkrWhGd1aNRxPkJ2"
       },
       "0813002961": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Elis Nurkairiyati",
         "uid": "ExHYPWwmFlVjHJHj8crsrwNvdfV2"
       },
       "0813202483": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Helmi H Lestari",
         "uid": "tDEBTh8ktAQ1qfyWcSzs0exmA0m2"
       },
+      "0813229772": {
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
+        "nama": "Cepi Nugraha",
+        "uid": "X3XMWNzFtrOiHRwLesMX9i1aKIC3"
+      },
       "0813233198": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Debi Nurbaeni",
         "uid": "XnVUi8XzFVWoiSQNlcEOkxlcmEk2"
       },
       "0813235002": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Yosi Susilawati",
         "uid": "AAsUkzDnP6Nc4yfUE9C4vGWp5Mo2"
       },
+      "0813237800": {
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
+        "nama": "Asep Sulaeman",
+        "uid": "1nDFZfBtMbde9QywMsSL1cu2oXs1"
+      },
       "0821150175": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Rimayah",
         "uid": "EpkAjRbNjUgIkwqkGKfQp1juCKo1"
       },
       "0821197281": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Lia Widianti",
         "uid": "4ysQTEw3OwS1s2dgodepRjkH3cW2"
       },
       "0821218399": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Reni Rahmawati",
         "uid": "UhzNCANN0nSaLtJzDSoNFPbdZEr1"
       },
       "0823171961": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Ayoe",
         "uid": "hStNdJkgOHP0WhRbdmIjajvRrD82"
       },
       "0851618585": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Toni",
         "uid": "6C0bgObPfBU1SebYFUSWjT4XGir2"
       },
       "0852208002": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Yana Mulyana",
         "uid": "tj95R7LHBOa7ZXADwlxrPyPrWiw2"
       },
       "0852216883": {
-        "classId": "IX-4",
-        "lastImported": 1778319648446,
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
         "nama": "Ade Yani",
         "uid": "FZIapetcVrhSrEqWODA9FFmYYlC3"
       },
       "0852223239": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Eva Yuliana",
         "uid": "KEIMFIaL5GM2JA5X9t8AwF31NFj1"
       },
       "0853217315": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Herawati",
         "uid": "CkxLrBzuRmf0bXU8W0UBfIuKFlH2"
       },
       "0857213841": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Ismi Meilasari ",
         "uid": "p1j3FDPJXMZ1oubjw9iG3TeAY343"
       },
+      "0857300098": {
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
+        "nama": "Cucu Mardiyah",
+        "uid": "wqRdusjvfbaw68hvlE2w6NISYPA3"
+      },
       "0895000949": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Reza Nurhusna",
         "uid": "bPz8yS2oM8WHdnmJ5EfZtIarB3p2"
       },
       "0895123456": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Imas Winaya",
         "uid": "c4Uc4erfJxQb6sJzP1Jm4UA6lIH3"
       },
       "0895300794": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Reza Nurhusna",
         "uid": "EyIOh4zksta0WyHmg6deZ24nsW02"
       },
       "0895701193": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Mutakin",
         "uid": "UcltGx8clLgNSXOiMws8Fm5rZ1V2"
       },
       "0897674788": {
-        "classId": "Undefined",
-        "lastImported": 1778319648446,
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
         "nama": "Anis Andriani",
         "uid": "eIxiBMuZGKVcZdJkH0OHc6mPJ5N2"
       },
       "0898771160": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Erna Sri Listiana ",
         "uid": "rgpJYQrN9OhWAfkeWHHMhhDCRqG3"
       },
       "5224863526": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Selly Ys",
         "uid": "Cdj9QWZFVhRybvz6zF22q16Kfh73"
       },
       "7747134819": {
         "classId": "GMTSN1-GRT",
-        "lastImported": 1778319648446,
+        "lastImported": 1778387816453,
         "nama": "Nani Triana",
         "uid": "5HZkCXP7YAeC4VhroNX4aahXgdc2"
+      },
+      "8573000985": {
+        "classId": "GMTSN1-GRT",
+        "lastImported": 1778387816453,
+        "nama": "Cici",
+        "uid": "qnzk5trLQVdf0T7jCgzkJQ5gqfH2"
+      }
+    },
+    "archieved": {
+      "12345678": {
+        "1977050920": {
+          "archievedAt": 1778398228202,
+          "archiveReason": "berhenti",
+          "classId": "GMTSN1-GRT",
+          "lastImported": 1778387816453,
+          "nama": "Eli Kholisoh",
+          "uid": "MWFX462GphT3EsPDr9sLJ9CVRI22"
+        },
+        "1977080420": {
+          "archievedAt": 1778398236711,
+          "archiveReason": "pindah",
+          "classId": "GMTSN1-GRT",
+          "lastImported": 1778387816453,
+          "nama": "Wina Wiwaha",
+          "uid": "VT3nvxocE8ZKLefJNyyXfTWRQdW2"
+        },
+        "1977113020": {
+          "archievedAt": 1778398244772,
+          "archiveReason": "cuti",
+          "classId": "GMTSN1-GRT",
+          "lastImported": 1778387816453,
+          "nama": "Risnawati",
+          "uid": "EDB1dYmDwIRtTJKZkoZbBc6AiqS2"
+        },
+        "1981111420": {
+          "archievedAt": 1778398252251,
+          "archiveReason": "skorsing",
+          "classId": "GMTSN1-GRT",
+          "lastImported": 1778387816453,
+          "nama": "Irma",
+          "uid": "S3ZDs44PzYSRK8XfK4iVO8EAw5y1"
+        }
       }
     }
   },
   "summary": {
     "12345678": {
-      "lastUpdate": 1778339530038,
+      "lastUpdate": 1778398475670,
       "totalClasses": 5,
-      "totalRombel": 67,
-      "totalRombelGroups": 4,
-      "totalRombelMembers": 10,
-      "totalStudents": 62,
+      "totalRombelGroups": 1,
+      "totalRombelMembers": 1,
+      "totalStudents": 63,
       "totalTeachers": 5,
-      "totalUsers": 75
+      "totalUsers": 73
+    },
+    "archieved": {
+      "lastUpdate": 1778398252310,
+      "totalStudents": 1
     }
   },
   "teachers": {
@@ -585,30 +957,6 @@
         "email": "myhilda26@gmail.com",
         "nama": "Hilda Auliya Nisa Nurfadila",
         "specialization": "Observer/Teacher"
-      }
-    }
-  },
-  "unrombel": {
-    "12345678": {
-      "1234567892": {
-        "lastUpdated": 1778338414613,
-        "nama": "M Sandy",
-        "uid": "PlaPpHjeCPfRG4mO7yDj3L5hCEE3"
-      },
-      "1984043020": {
-        "lastUpdated": 1778338414613,
-        "nama": "Eva P",
-        "uid": "CLtkFqQBRuMbGYnLZgkb2Oz34X53"
-      },
-      "0812208620": {
-        "lastUpdated": 1778338414613,
-        "nama": "Ai Lalah",
-        "uid": "rBc4lQIpfiVZcbL0HKCj2PgqAvR2"
-      },
-      "0897674788": {
-        "lastUpdated": 1778338414613,
-        "nama": "Anis Andriani",
-        "uid": "eIxiBMuZGKVcZdJkH0OHc6mPJ5N2"
       }
     }
   }

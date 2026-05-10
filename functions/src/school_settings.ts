@@ -136,7 +136,7 @@ export const manageRombel = onCall({
     const rawTA = tahunAjaran || currentTA;
     if (!rawTA && action !== "restore") throw new HttpsError("invalid-argument", "Tahun Ajaran required.");
     
-    const taMatch = rawTA?.toString().match(/^(\d{4})/);
+    const taMatch = rawTA?.toString()?.match(/^(\d{4})/);
     const ta = taMatch ? taMatch[1] : (rawTA || "UNKNOWN");
 
     if (action === "enroll") {
@@ -230,14 +230,15 @@ export const manageRombel = onCall({
         }
       }
     } else if (action === "restore") {
-      // Restore dari Arsip (Bulk)
-      const { source, targetClassId } = request.data || {};
+      // Restore dari Arsip (Bulk) - Simpler Version
+      const { source } = request.data || {};
       for (const s of students) {
+        const cleanSid = s.id.toString().trim();
+        const cleanNpsn = npsn.trim();
+
         // 1. Hapus dari Arsip
         if (source === "archieved") {
           const { reason } = request.data || {};
-          const cleanSid = s.id.toString().trim();
-          const cleanNpsn = npsn.trim();
           updates[`schools/rombel/archieved/${cleanNpsn}/${reason}/${cleanSid}`] = null;
           // Pindahkan Master Data balik
           const archSnap = await admin.database().ref(`schools/students/archieved/${cleanNpsn}/${cleanSid}`).get();
@@ -250,8 +251,6 @@ export const manageRombel = onCall({
           }
         } else if (source === "graduated") {
           const { gradYear } = request.data || {};
-          const cleanSid = s.id.toString().trim();
-          const cleanNpsn = npsn.trim();
           updates[`schools/rombel/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`] = null;
           // Pindahkan Master Data balik
           const gradSnap = await admin.database().ref(`schools/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`).get();
@@ -263,36 +262,26 @@ export const manageRombel = onCall({
           }
         }
 
-        // 2. Masukkan ke Rombel Baru (Tahun Ajaran Sekarang)
-        updates[`schools/rombel/members/${npsn}/${ta}/${targetClassId}/${s.id}`] = {
+        // 2. Masukkan ke Unrombel
+        updates[`schools/rombel/unrombel/${cleanNpsn}/${cleanSid}`] = {
           nama: s.nama,
           uid: s.uid || "",
-          joinedAt: timestamp,
           restoredAt: timestamp
         };
-        // Fix: If we already prepared the full student data update at line 246/257, 
-        // we must not update a child path separately.
-        // Fix: Ancestor Path Error Prevention
-        const cleanNpsn = npsn.trim();
-        const cleanSid = s.id.toString().trim();
+        
+        // Update classId di Master Data
         const studentPath = `schools/students/${cleanNpsn}/${cleanSid}`;
-        
-        console.log(`🛠️ Restoring Student Path: ${studentPath}`);
-        
         if (updates[studentPath]) {
-          console.log(`   -> Merging classId into existing object for ${cleanSid}`);
-          updates[studentPath].classId = targetClassId;
+          updates[studentPath].classId = "UNROBEL";
         } else {
-          console.log(`   -> Setting classId for new student path ${cleanSid}`);
-          updates[`${studentPath}/classId`] = targetClassId;
+          updates[`${studentPath}/classId`] = "UNROBEL";
         }
 
         // 3. Kembalikan Status User
         if (s.uid) {
-          updates[`users/${npsn}/${s.uid}/status`] = "approved";
+          updates[`users/${cleanNpsn}/${s.uid}/status`] = "approved";
         }
       }
-      updates[`schools/rombel/lists/${npsn}/${ta}/${targetClassId}/name`] = targetClassId;
     }
 
     await admin.database().ref().update(updates);

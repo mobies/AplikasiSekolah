@@ -89,7 +89,7 @@ export default function ArchivePage() {
     };
   }, [npsn]);
 
-  const handleRestore = async (targetClassId: string) => {
+  const handleRestore = async () => {
     if (selectedStudents.length === 0) return;
     
     setIsProcessing(true);
@@ -104,13 +104,11 @@ export default function ArchivePage() {
         action: "restore",
         source: activeTab,
         tahunAjaran: currentTA,
-        targetClassId,
         students: studentsToRestore
       });
 
       setSelectedStudents([]);
-      setIsRestoreModalOpen(false);
-      Swal.fire({ title: "Berhasil", text: "Siswa telah dikembalikan ke rombel aktif.", icon: "success", timer: 1500 });
+      Swal.fire({ title: "Berhasil", text: "Siswa telah dikembalikan ke daftar 'Tanpa Rombel'.", icon: "success", timer: 1500 });
     } catch (error: any) {
       Swal.fire("Error", error.message, "error");
     } finally {
@@ -169,10 +167,12 @@ export default function ArchivePage() {
 
           {selectedStudents.length > 0 && (
             <button 
-              onClick={() => setIsRestoreModalOpen(true)}
-              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-indigo-600/20 active:scale-95"
+              onClick={handleRestore}
+              disabled={isProcessing}
+              className="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest flex items-center gap-3 transition-all shadow-xl shadow-indigo-600/20 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RefreshCcw className="w-5 h-5" /> Kembalikan ke Rombel Aktif ({selectedStudents.length})
+              {isProcessing ? <Loader2 className="w-5 h-5 animate-spin" /> : <RefreshCcw className="w-5 h-5" />}
+              Kembalikan ke Siswa Aktif ({selectedStudents.length})
             </button>
           )}
         </div>
@@ -244,38 +244,7 @@ export default function ArchivePage() {
         </div>
       </main>
 
-      {/* RESTORE MODAL: SELECT CLASS */}
-      <AnimatePresence>
-        {isRestoreModalOpen && (
-          <div className="fixed inset-0 z-[60] flex items-center justify-center p-6">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsRestoreModalOpen(false)} className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" />
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-              className="relative bg-slate-900 border border-slate-800 w-full max-w-md rounded-[40px] p-10 shadow-2xl"
-            >
-              <h2 className="text-2xl font-black text-white mb-2">Pilih Rombel Tujuan</h2>
-              <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-8">Mengembalikan {selectedStudents.length} siswa ke Tahun Ajaran {currentTA}/{parseInt(currentTA)+1}.</p>
-              
-              <div className="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar pr-2">
-                {Object.entries(classRef).map(([id, val]: [string, any]) => (
-                  <button 
-                    key={id}
-                    disabled={isProcessing}
-                    onClick={() => handleRestore(id)}
-                    className="w-full p-6 bg-slate-950 border border-slate-800 rounded-3xl hover:border-indigo-500 transition-all flex items-center justify-between group active:scale-95"
-                  >
-                    <div className="text-left">
-                      <p className="font-black text-white">{val.className}</p>
-                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{id}</p>
-                    </div>
-                    <RefreshCcw className={`w-6 h-6 text-slate-700 group-hover:text-indigo-400 transition-colors ${isProcessing ? "animate-spin" : ""}`} />
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
+      {/* RESTORE MODAL REMOVED - AUTO MOVE TO UNROMBEL */}
 
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }

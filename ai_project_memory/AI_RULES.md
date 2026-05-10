@@ -1,5 +1,10 @@
 # AI Rules - Aturan Kerja Keras
 
+> [!IMPORTANT]
+> **PANDUAN UTAMA / MANDATORY GUIDELINE:**
+> "Tidak boleh mengubah Struktur alur data atau aplikasi yang sudah berjalan tanpa ijin USER."
+> Semua AI yang mengerjakan project ini wajib mematuhi aturan ini secara mutlak.
+
 ## 1. Prinsip Utama
 - **Jangan Refactor Besar Tanpa Izin**: Dilarang mengubah struktur folder atau mengganti framework inti.
 - **Jangan Mengubah Struktur Database**: Penambahan field diperbolehkan, namun penghapusan atau penggantian nama path/collection wajib dikonfirmasi.
