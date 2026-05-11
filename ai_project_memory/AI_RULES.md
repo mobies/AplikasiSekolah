@@ -11,7 +11,12 @@
 - **Jangan Rename API/Functions**: Nama Cloud Functions harus tetap konsisten untuk menjaga integrasi frontend/backend.
 - **Backward Compatibility**: Pastikan perubahan baru tidak merusak user yang sudah ada atau data lama.
 - **Git Protocol**: DILARANG melakukan `git commit` atau `git push` ke GitHub tanpa perintah eksplisit dari user.
-- **Efficient Deployment**: Saat melakukan deploy functions ke Firebase, gunakan flag `--only functions:namaFungsi` untuk men-deploy hanya bagian yang diubah/ditambah saja agar proses lebih cepat.
+- **Efficient Deployment**: 
+    - Untuk Cloud Functions: Gunakan `--only functions:namaFungsi`.
+    - Untuk Frontend: Gunakan `--only hosting`.
+- **SPA Mode Mandatory**: Seluruh project web wajib menggunakan `output: 'export'`. Tidak diperbolehkan ada logika Server-Side Runtime (SSR).
+- **Region asia-southeast1**: Seluruh Cloud Functions wajib dideploy ke region `asia-southeast1`.
+- **Standard Firebase instance**: Gunakan instance global dari `@/lib/firebase` untuk menjamin konsistensi region dan konfigurasi.
 
 ## 2. Standar Coding & Security
 - **Error Logging**: Selalu gunakan `console.error` atau logging formal pada blok `catch`.

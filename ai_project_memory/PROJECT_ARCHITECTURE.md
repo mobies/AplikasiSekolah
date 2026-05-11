@@ -2,25 +2,26 @@
 
 ## 1. Diagram Arsitektur (High Level)
 ```text
-[ USER BROWSER ] <------> [ FIREBASE HOSTING ]
+[ USER BROWSER (SPA Mode) ] <------> [ FIREBASE HOSTING (Static CDN) ]
        |
        | (httpsCallable v2)
        v
-[ CLOUD FUNCTIONS ] <---> [ ADMIN SDK ]
-       |                      |
-       +----------------------+------> [ RTDB (Main Data, Config & Cache) ]
+[ CLOUD FUNCTIONS (asia-southeast1) ] <---> [ ADMIN SDK ]
+       |                                     |
+       +-------------------------------------+------> [ RTDB (Main Data, Config & Cache) ]
 ```
 
 ## 2. Struktur Project
 ```text
 /
-├── functions/             # Backend (Firebase Cloud Functions v2)
+├── functions/             # Backend (Firebase Cloud Functions v2 - Region: asia-southeast1)
 │   ├── src/index.ts       # Central logic & API exports
 │   └── package.json
-├── web/                   # Frontend (Next.js 14)
-│   ├── src/app/           # Next.js App Router (Pages)
+├── web/                   # Frontend (Next.js 16 - SPA Mode)
+│   ├── src/app/           # Next.js App Router (Client-side Pages)
 │   ├── src/lib/           # Firebase config & utilities
-│   └── tailwind.config.ts
+│   ├── out/               # Hasil Build Statis (Deploy Target)
+│   └── next.config.ts     # Config: output: 'export'
 ├── DB_MAP.md              # Skema database detail
 └── ai_project_memory/     # Project memory for AI continuity
 ```
