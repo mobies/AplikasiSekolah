@@ -12,14 +12,16 @@ import {
   ShieldCheck,
   UserPlus,
   Clock,
-  ExternalLink,
-  ChevronRight,
-  Info
+  Info,
+  ArrowLeft,
+  Trash2,
+  ExternalLink
 } from "lucide-react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { rtdb } from "@/lib/firebase";
-import { ref, onValue } from "firebase/database";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { rtdb, functions } from "@/lib/firebase";
+import { ref, onValue, query, orderByChild, equalTo, remove } from "firebase/database";
+import { httpsCallable } from "firebase/functions";
 import Swal from "sweetalert2";
 
 export default function InvitationManager() {
@@ -29,21 +31,24 @@ export default function InvitationManager() {
   const [rombelName, setRombelName] = useState("");
   const [rombelList, setRombelList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [activeLinks, setActiveLinks] = useState<any[]>([]);
   const [generatedLink, setGeneratedLink] = useState<{link: string, expiresAt: number} | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Otomasi Tahun Ajaran (YYYY_YYYY)
-  const now = new Date();
-  const month = now.getMonth(); // 0-11
-  const year = now.getFullYear();
-  const tahunAjaran = month >= 6 ? `${year}_${year + 1}` : `${year - 1}_${year}`;
+  const [tahunAjaran] = useState(() => {
+    const now = new Date();
+    const month = now.getMonth(); // 0-11
+    const year = now.getFullYear();
+    // Aturan: Jan-Jun (0-5) -> Year - 1, Jul-Des (6-11) -> Current Year
+    return month >= 6 ? `${year}` : `${year - 1}`;
+  });
 
   useEffect(() => {
-    if (!npsn || role !== "student") return;
+    if (!npsn) return;
     
     // Ambil daftar rombel dari metadata ringan (lists)
     const rombelRef = ref(rtdb, `schools/rombel/lists/${npsn}/${tahunAjaran}`);
-    const unsubscribe = onValue(rombelRef, (snap) => {
+    const unsubscribeRombel = onValue(rombelRef, (snap) => {
       if (snap.exists()) {
         const data = snap.val();
         const list = Object.entries(data).map(([id, meta]: [string, any]) => ({
@@ -55,8 +60,30 @@ export default function InvitationManager() {
         setRombelList([]);
       }
     });
-    return () => unsubscribe();
-  }, [npsn, role, tahunAjaran]);
+
+    // Fetch Active Invitation Links
+    const invitesRef = query(ref(rtdb, 'invitations'), orderByChild('npsn'), equalTo(npsn));
+    const unsubscribeInvites = onValue(invitesRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const now = Date.now();
+        const list = Object.entries(snapshot.val())
+          .map(([token, val]: [string, any]) => ({
+            token,
+            ...val
+          }))
+          .filter(link => link.expiresAt > now)
+          .sort((a, b) => b.createdAt - a.createdAt);
+        setActiveLinks(list);
+      } else {
+        setActiveLinks([]);
+      }
+    });
+
+    return () => {
+      unsubscribeRombel();
+      unsubscribeInvites();
+    };
+  }, [npsn, tahunAjaran]);
 
   const handleGenerate = async () => {
     if (role === "student" && !rombelId) {
@@ -66,7 +93,6 @@ export default function InvitationManager() {
 
     setLoading(true);
     try {
-      const functions = getFunctions();
       const generateLink = httpsCallable(functions, "generateInvitationLink");
       const result = await generateLink({
         npsn,
@@ -83,9 +109,43 @@ export default function InvitationManager() {
     }
   };
 
-  const copyToClipboard = () => {
-    if (!generatedLink) return;
-    navigator.clipboard.writeText(generatedLink.link);
+  const handleDeleteLink = async (token: string) => {
+    const result = await Swal.fire({
+      title: 'Hapus Link?',
+      text: 'Link ini tidak akan bisa digunakan lagi oleh pendaftar.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, Hapus',
+      cancelButtonText: 'Batal',
+      background: '#0f172a',
+      color: '#fff',
+      confirmButtonColor: '#ef4444'
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await remove(ref(rtdb, `invitations/${token}`));
+        Swal.fire({
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          title: 'Link dihapus',
+          showConfirmButton: false,
+          timer: 2000,
+          background: '#0f172a',
+          color: '#fff'
+        });
+      } catch (error: any) {
+        Swal.fire('Gagal', error.message, 'error');
+      }
+    }
+  };
+
+  const copyToClipboard = (text?: string) => {
+    const linkToCopy = text || (generatedLink?.link);
+    if (!linkToCopy) return;
+
+    navigator.clipboard.writeText(linkToCopy);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -94,9 +154,18 @@ export default function InvitationManager() {
     <div className="min-h-screen bg-slate-950 text-white p-8">
       <div className="max-w-4xl mx-auto space-y-12">
         {/* HEADER */}
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-black tracking-tight flex items-center gap-4">
+        <header className="flex flex-col gap-6">
+          <Link 
+            href={`/school/${npsn}/dashboard`}
+            className="flex items-center gap-2 text-slate-500 hover:text-white transition-colors w-fit group"
+          >
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <span className="text-xs font-bold uppercase tracking-widest">Kembali ke Dashboard</span>
+          </Link>
+
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-black tracking-tight flex items-center gap-4">
               <span className="p-3 bg-indigo-600 rounded-2xl shadow-xl shadow-indigo-600/20">
                 <UserPlus className="w-8 h-8" />
               </span>
@@ -107,7 +176,8 @@ export default function InvitationManager() {
           <div className="text-right">
             <div className="bg-slate-900 border border-slate-800 px-6 py-3 rounded-2xl inline-flex items-center gap-3">
               <Calendar className="w-5 h-5 text-indigo-400" />
-              <span className="font-black text-sm uppercase tracking-widest">TA {tahunAjaran.replace('_', '/')}</span>
+              <span className="font-black text-sm uppercase tracking-widest">TA {tahunAjaran}/{parseInt(tahunAjaran) + 1}</span>
+            </div>
             </div>
           </div>
         </header>
@@ -216,7 +286,7 @@ export default function InvitationManager() {
                           {generatedLink.link}
                         </code>
                         <button 
-                          onClick={copyToClipboard}
+                          onClick={() => copyToClipboard()}
                           className="p-2 hover:bg-white/10 rounded-xl transition-all"
                         >
                           {copied ? <CheckCircle2 className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5 text-white" />}
@@ -248,6 +318,65 @@ export default function InvitationManager() {
                   <div className="space-y-2">
                     <h3 className="text-xl font-black text-slate-700">Menunggu Konfigurasi</h3>
                     <p className="text-slate-600 text-sm max-w-[200px] mx-auto">Sesuaikan tipe pendaftaran dan tekan tombol buat link.</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* ACTIVE LINKS LIST */}
+            <AnimatePresence>
+              {activeLinks.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 space-y-4"
+                >
+                  <div className="flex items-center justify-between px-2">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">Link Aktif ({activeLinks.length})</h3>
+                    <div className="h-px bg-slate-800 flex-1 ml-4" />
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-3">
+                    {activeLinks.map((link) => (
+                      <motion.div
+                        layout
+                        key={link.token}
+                        className="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 flex items-center justify-between group hover:border-indigo-500/30 transition-all"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className={`p-2 rounded-xl ${link.role === 'student' ? 'bg-indigo-600/10 text-indigo-400' : 'bg-emerald-600/10 text-emerald-400'}`}>
+                            {link.role === 'student' ? <Users className="w-4 h-4" /> : <UserCircle className="w-4 h-4" />}
+                          </div>
+                          <div>
+                            <p className="text-xs font-black uppercase tracking-widest text-white leading-tight">
+                              {link.role === 'student' ? (link.rombelName || link.rombelId) : link.role}
+                            </p>
+                            <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-1">
+                              Berakhir: {new Date(link.expiresAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button 
+                            onClick={() => {
+                              const host = typeof window !== 'undefined' ? window.location.origin : '';
+                              copyToClipboard(`${host}/join/${link.token}`);
+                            }}
+                            className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white transition-all"
+                            title="Salin Link"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteLink(link.token)}
+                            className="p-2 hover:bg-red-500/10 rounded-lg text-slate-500 hover:text-red-400 transition-all"
+                            title="Hapus"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
                 </motion.div>
               )}

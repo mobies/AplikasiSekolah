@@ -130,7 +130,7 @@ export const manageRombel = onCall({
     await validateSchoolAdmin(request, npsn);
 
     const updates: any = {};
-    const timestamp = admin.database.ServerValue.TIMESTAMP;
+    const timestamp = Date.now(); // Local timestamp for comparison and storage
 
     // Robust Year Extraction
     const rawTA = tahunAjaran || currentTA;
@@ -236,33 +236,35 @@ export const manageRombel = onCall({
         const cleanSid = s.id.toString().trim();
         const cleanNpsn = npsn.trim();
 
-        // 1. Hapus dari Arsip
+        // 1. Persiapkan Master Data balik & Penempatan ke Unrombel
         if (source === "archieved") {
-          const { reason } = request.data || {};
-          updates[`schools/rombel/archieved/${cleanNpsn}/${reason}/${cleanSid}`] = null;
-          // Pindahkan Master Data balik
           const archSnap = await admin.database().ref(`schools/students/archieved/${cleanNpsn}/${cleanSid}`).get();
           if (archSnap.exists()) {
             const data = archSnap.val();
             delete data.archiveReason;
             delete data.archievedAt;
             updates[`schools/students/${cleanNpsn}/${cleanSid}`] = data;
-            updates[`schools/students/archieved/${cleanNpsn}/${cleanSid}`] = null;
           }
         } else if (source === "graduated") {
-          const { gradYear } = request.data || {};
-          updates[`schools/rombel/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`] = null;
-          // Pindahkan Master Data balik
-          const gradSnap = await admin.database().ref(`schools/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`).get();
-          if (gradSnap.exists()) {
-            const data = gradSnap.val();
-            delete data.graduatedAt;
-            updates[`schools/students/${cleanNpsn}/${cleanSid}`] = data;
-            updates[`schools/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`] = null;
+          const gradYear = s.gradYear;
+          if (gradYear) {
+            const gradSnap = await admin.database().ref(`schools/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`).get();
+            if (gradSnap.exists()) {
+              const data = gradSnap.val();
+              const gradAt = data.graduatedAt || 0;
+              const threeMonthsAgo = timestamp - (90 * 24 * 60 * 60 * 1000);
+              
+              if (gradAt < threeMonthsAgo) {
+                throw new HttpsError("failed-precondition", `Siswa ${data.nama} sudah lulus lebih dari 3 bulan dan tidak dapat dipulihkan.`);
+              }
+
+              delete data.graduatedAt;
+              updates[`schools/students/${cleanNpsn}/${cleanSid}`] = data;
+            }
           }
         }
 
-        // 2. Masukkan ke Unrombel
+        // 2. Masukkan ke Unrombel (Logika Utama Penempatan)
         updates[`schools/rombel/unrombel/${cleanNpsn}/${cleanSid}`] = {
           nama: s.nama,
           uid: s.uid || "",
@@ -277,7 +279,20 @@ export const manageRombel = onCall({
           updates[`${studentPath}/classId`] = "UNROBEL";
         }
 
-        // 3. Kembalikan Status User
+        // 3. Penghapusan Jejak Alumni / Arsip (Setelah penempatan dipastikan masuk dalam update)
+        if (source === "archieved") {
+          const reason = s.reason;
+          if (reason) updates[`schools/rombel/archieved/${cleanNpsn}/${reason}/${cleanSid}`] = null;
+          updates[`schools/students/archieved/${cleanNpsn}/${cleanSid}`] = null;
+        } else if (source === "graduated") {
+          const gradYear = s.gradYear;
+          if (gradYear) {
+            updates[`schools/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`] = null;
+            updates[`schools/rombel/graduated/${cleanNpsn}/${gradYear}/${cleanSid}`] = null;
+          }
+        }
+
+        // 4. Kembalikan Status User
         if (s.uid) {
           updates[`users/${cleanNpsn}/${s.uid}/status`] = "approved";
         }
@@ -322,7 +337,9 @@ export const generateInvitationLink = onCall({
 
     await admin.database().ref(`invitations/${token}`).set(invitationData);
 
-    const baseUrl = "http://localhost:3000"; 
+    const origin = request.rawRequest.headers.origin || "https://appsekolah2026.web.app";
+    const baseUrl = origin.endsWith('/') ? origin.slice(0, -1) : origin;
+
     return {
       token,
       link: `${baseUrl}/join/${token}`,
@@ -394,8 +411,8 @@ export const registerViaInvitation = onCall({
       const nisn = formData.nisn || `INV_${uid}`;
       const { tahunAjaran, rombelId, rombelName } = invite;
 
-      const taMatch = tahunAjaran.match(/^(\d{4})/);
-      const ta = taMatch ? taMatch[1] : tahunAjaran;
+      const taMatch = tahunAjaran?.toString()?.match(/^(\d{4})/);
+      const ta = taMatch ? taMatch[1] : (tahunAjaran || "UNKNOWN");
 
       updates[`schools/students/${npsn}/${nisn}`] = {
         nama: name,

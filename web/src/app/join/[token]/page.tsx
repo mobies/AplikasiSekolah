@@ -15,9 +15,9 @@ import {
   Users
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { auth } from "@/lib/firebase";
+import { auth, functions } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import { httpsCallable } from "firebase/functions";
 import Swal from "sweetalert2";
 
 export default function JoinInvitation() {
@@ -46,7 +46,6 @@ export default function JoinInvitation() {
 
   const validateToken = async () => {
     try {
-      const functions = getFunctions();
       const validate = httpsCallable(functions, "validateInvitationToken");
       const result = await validate({ token });
       setInvitation(result.data);
@@ -74,7 +73,6 @@ export default function JoinInvitation() {
 
     setRegistering(true);
     try {
-      const functions = getFunctions();
       const register = httpsCallable(functions, "registerViaInvitation");
       await register({ token, formData });
       

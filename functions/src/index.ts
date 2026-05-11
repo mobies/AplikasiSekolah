@@ -732,5 +732,13 @@ export const getSmtpStatus = onCall({
 
 export * from "./payment_gateway";
 export * from "./system_settings";
-export * from "./school_settings";
+export { 
+  importSchoolData,
+  manageRombel,
+  generateInvitationLink, 
+  validateInvitationToken, 
+  registerViaInvitation,
+  manageClassroomReference,
+  updateStudentDetail
+} from "./school_settings";
 export * from "./data_triggers";

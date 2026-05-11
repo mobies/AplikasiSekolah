@@ -213,7 +213,7 @@ export default function StudentsPage() {
     return () => unsubscribe();
   }, [npsn, selectedStudent, isDetailModalOpen]);
 
-  const uniqueClasses = Array.from(new Set(students.map(s => s.classId))).sort();
+  const uniqueClasses = Array.from(new Set(students.map(s => s.classId))).filter(c => typeof c === 'string' && c !== "").sort();
 
   const filteredStudents = useMemo(() => {
     if (!searchAll && !selectedClass) return [];
@@ -430,7 +430,7 @@ export default function StudentsPage() {
                           >
                             {student.thumb_path || student.foto_path ? (
                               <img src={student.thumb_path || student.foto_path} alt={student.nama} className="w-full h-full object-cover" />
-                            ) : student.nama.charAt(0)}
+                            ) : (student.nama || "?").charAt(0)}
                           </div>
                           <span className="font-bold text-white">{student.nama}</span>
                         </div>

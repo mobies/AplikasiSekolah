@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, 
+  LayoutGrid,
   Users, 
   BookOpen, 
   GraduationCap, 
@@ -34,7 +35,7 @@ export default function SchoolAdminDashboard() {
   const [adminProfile, setAdminProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [stats, setStats] = useState({ totalStudents: 0, totalTeachers: 0, totalClasses: 0, totalUsers: 0, totalRombel: 0 });
+  const [stats, setStats] = useState<any>({ totalStudents: 0, totalTeachers: 0, totalClasses: 0, totalUsers: 0, totalRombelGroups: 0, totalRombelMembers: 0 });
   const router = useRouter();
 
   // Refs untuk menyimpan unsubs agar bisa dihentikan sebelum logout
@@ -124,7 +125,7 @@ export default function SchoolAdminDashboard() {
     // 3. Listener Real-time untuk Statistik (Cost Optimization)
     const statsRef = ref(rtdb, `schools/summary/${npsn}`);
     const unsubscribeStats = onValue(statsRef, (snap) => {
-      if (snap.exists()) setStats(prev => ({ ...prev, ...snap.val() }));
+      if (snap.exists()) setStats((prev: any) => ({ ...prev, ...snap.val() }));
     });
 
     unsubsRef.current.auth = unsubscribeAuth;
@@ -261,9 +262,21 @@ export default function SchoolAdminDashboard() {
                 icon={<GraduationCap className="text-emerald-400" />} 
               />
               <StatCard 
-                label="Total Rombel" 
-                value={(stats.totalRombel || 0).toLocaleString('id-ID')} 
-                subValue="Siswa dlm Kelas"
+                label="ROMBEL/MEMBER" 
+                value={
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <LayoutGrid className="w-4 h-4 text-amber-500/50" />
+                      <span>{stats.totalRombelGroups || 0}</span>
+                    </div>
+                    <span className="text-slate-700 font-light">/</span>
+                    <div className="flex items-center gap-1.5">
+                      <Users className="w-4 h-4 text-indigo-500/50" />
+                      <span>{stats.totalRombelMembers || 0}</span>
+                    </div>
+                  </div>
+                } 
+                subValue="Jml Rombel dg Siswa dienroll"
                 icon={<BookOpen className="text-amber-400" />} 
               />
             </div>
@@ -340,7 +353,7 @@ function LinkItem({ icon, label, active = false, href }: { icon: React.ReactNode
   );
 }
 
-function StatCard({ label, value, subValue, icon }: { label: string, value: string, subValue: string, icon: React.ReactNode }) {
+function StatCard({ label, value, subValue, icon }: { label: string, value: React.ReactNode, subValue: string, icon: React.ReactNode }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 hover:border-slate-700 transition-all group">
       <div className="flex items-center gap-3 mb-3">

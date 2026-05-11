@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, Suspense } from "react";
 import { 
   Users, 
   Search, 
@@ -28,7 +28,7 @@ import Link from "next/link";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function OwnerManageUsers() {
+function OwnerManageUsersContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const npsnFromUrl = searchParams.get("npsn");
@@ -455,5 +455,18 @@ export default function OwnerManageUsers() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function OwnerManageUsers() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center space-y-6">
+        <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
+        <p className="text-slate-500 font-black uppercase tracking-[0.3em] text-xs">Memuat Halaman...</p>
+      </div>
+    }>
+      <OwnerManageUsersContent />
+    </Suspense>
   );
 }

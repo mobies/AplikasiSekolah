@@ -187,6 +187,21 @@ export default function RombelPage() {
 
   const handleBulkUnenroll = async () => {
     if (selectedInRombel.length === 0 || !selectedRombel) return;
+
+    const result = await Swal.fire({
+      title: "Keluarkan Siswa?",
+      text: `${selectedInRombel.length} Siswa yang dipilih akan dikembalikan ke daftar 'Tanpa Rombel'.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Ya, Keluarkan",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#6366f1",
+      background: "#0f172a",
+      color: "#f1f5f9"
+    });
+
+    if (!result.isConfirmed) return;
+
     setIsProcessing(true);
     try {
       const manageFn = httpsCallable(functions, "manageRombel");
@@ -204,6 +219,34 @@ export default function RombelPage() {
       
       setSelectedInRombel([]);
       Swal.fire({ title: "Berhasil", text: `${studentsToUnenroll.length} Siswa dikeluarkan ke Unrombel.`, icon: "success", timer: 1500 });
+    } catch (error: any) {
+      Swal.fire("Error", error.message, "error");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleBulkMove = async (targetClassId: string) => {
+    if (selectedInRombel.length === 0 || !selectedRombel) return;
+    setIsProcessing(true);
+    try {
+      const manageFn = httpsCallable(functions, "manageRombel");
+      const studentsToMove = currentRombelStudents
+        .filter(s => selectedInRombel.includes(s.id))
+        .map(s => ({ id: s.id, nama: s.nama, uid: s.uid }));
+
+      await manageFn({
+        npsn,
+        action: "move",
+        tahunAjaran,
+        classId: selectedRombel.classId,
+        targetClassId,
+        students: studentsToMove
+      });
+      
+      setSelectedInRombel([]);
+      setIsEnrollModalOpen(false);
+      Swal.fire({ title: "Berhasil", text: `${studentsToMove.length} Siswa dipindahkan ke ${targetClassId}.`, icon: "success", timer: 1500 });
     } catch (error: any) {
       Swal.fire("Error", error.message, "error");
     } finally {
@@ -551,51 +594,57 @@ export default function RombelPage() {
                     <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">TA {formatTA(tahunAjaran)} • {loadingStudents ? "Memuat..." : `${currentRombelStudents.length} Siswa`}</p>
                   </div>
                 </div>
-                <button onClick={() => { setSelectedRombel(null); setSelectedInRombel([]); setCurrentRombelStudents([]); }} className="p-2 hover:bg-slate-800 rounded-xl text-slate-500 transition-all"><X className="w-6 h-6" /></button>
-              </div>
-
-              <div className="p-6 bg-slate-900 border-b border-slate-800 flex items-center gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                  <input 
-                    type="text" 
-                    placeholder="Cari siswa di rombel ini..."
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:border-indigo-500 transition-all text-white text-sm"
-                    value={studentSearchQuery}
-                    onChange={(e) => setStudentSearchQuery(e.target.value)}
-                  />
-                </div>
-                {selectedInRombel.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={handleBulkUnenroll}
-                      disabled={isProcessing}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 transition-all border border-slate-700"
-                    >
-                      {isProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <><UserMinus className="w-3 h-3" /> Keluarkan</>}
-                    </button>
-                    <button 
-                      onClick={handleBulkDeactivate}
-                      disabled={isProcessing}
-                      className="px-4 py-2 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 transition-all border border-red-500/20 shadow-lg shadow-red-500/10"
-                    >
-                      {isProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <><UserX className="w-3 h-3" /> Non-Aktif</>}
-                    </button>
-                    <button 
-                      onClick={handleBulkGraduate}
-                      disabled={isProcessing}
-                      className="px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-white rounded-xl font-black text-[9px] uppercase tracking-widest flex items-center gap-2 transition-all border border-emerald-500/20 shadow-lg shadow-emerald-500/10"
-                    >
-                      {isProcessing ? <Loader2 className="w-3 h-3 animate-spin" /> : <><Award className="w-3 h-3" /> Luluskan</>}
-                    </button>
-                    <span className="ml-2 px-3 py-1 bg-indigo-600 text-white rounded-full text-[10px] font-black">{selectedInRombel.length}</span>
+                <div className="flex items-center gap-4">
+                  <div className="relative w-40 md:w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
+                    <input 
+                      type="text" 
+                      placeholder="Cari siswa..."
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-10 pr-4 py-2 focus:outline-none focus:border-indigo-500 transition-all text-white text-xs"
+                      value={studentSearchQuery}
+                      onChange={(e) => setStudentSearchQuery(e.target.value)}
+                    />
                   </div>
-                )}
+                  <button onClick={() => { setSelectedRombel(null); setSelectedInRombel([]); setCurrentRombelStudents([]); }} className="p-2 hover:bg-slate-800 rounded-xl text-slate-500 transition-all"><X className="w-6 h-6" /></button>
+                </div>
               </div>
 
-              <div className="overflow-y-auto p-4 custom-scrollbar flex-1">
+              {selectedInRombel.length > 0 && (
+                <div className="bg-slate-900 border-b border-slate-800 flex overflow-hidden shrink-0">
+                  <button 
+                    onClick={() => setIsEnrollModalOpen(true)}
+                    disabled={isProcessing}
+                    className="flex-1 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all border-r border-indigo-500/30 rounded-none"
+                  >
+                    <ArrowRightCircle className="w-3.5 h-3.5" /> Pindah Rombel
+                  </button>
+                  <button 
+                    onClick={handleBulkUnenroll}
+                    disabled={isProcessing}
+                    className="flex-1 py-4 bg-slate-800 hover:bg-slate-700 text-white font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all border-r border-slate-700/30 rounded-none"
+                  >
+                    <UserMinus className="w-3.5 h-3.5" /> Keluarkan
+                  </button>
+                  <button 
+                    onClick={handleBulkDeactivate}
+                    disabled={isProcessing}
+                    className="flex-1 py-4 bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all border-r border-red-500/20 rounded-none"
+                  >
+                    <UserX className="w-3.5 h-3.5" /> Non-Aktif
+                  </button>
+                  <button 
+                    onClick={handleBulkGraduate}
+                    disabled={isProcessing}
+                    className="flex-1 py-4 bg-emerald-600/10 hover:bg-emerald-600 text-emerald-500 hover:text-white font-black text-[9px] uppercase tracking-widest flex items-center justify-center gap-2 transition-all rounded-none"
+                  >
+                    <Award className="w-3.5 h-3.5" /> Luluskan
+                  </button>
+                </div>
+              )}
+
+              <div className="overflow-y-auto custom-scrollbar flex-1 relative">
                 <table className="w-full text-left border-collapse">
-                  <thead>
+                  <thead className="sticky top-0 z-10 bg-slate-900 shadow-sm">
                     <tr className="text-[10px] font-black uppercase tracking-widest text-slate-500 border-b border-slate-800">
                       <th className="px-6 py-4 w-12">
                         <button 
@@ -631,6 +680,22 @@ export default function RombelPage() {
                   </tbody>
                 </table>
               </div>
+
+              <div className="px-8 py-3 bg-slate-950/80 border-t border-slate-800 flex justify-between items-center shrink-0">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    <Users className="w-3 h-3" />
+                    Total: <span className="text-white">{currentRombelStudents.length}</span>
+                  </div>
+                  {selectedInRombel.length > 0 && (
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-400/10 px-3 py-1 rounded-full">
+                      <CheckSquare className="w-3 h-3" />
+                      Terpilih: <span>{selectedInRombel.length}</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-[9px] font-bold text-slate-700 uppercase tracking-tighter italic">Aplikasi Sekolah v2026</p>
+              </div>
             </motion.div>
           </div>
         )}
@@ -649,11 +714,14 @@ export default function RombelPage() {
               <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-8">Memasukkan {selectedInUnrombel.length} siswa terpilih.</p>
               
               <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-                {rombelList.map(r => (
+                {rombelList.filter(r => r.classId !== selectedRombel?.classId).map(r => (
                   <button 
                     key={r.classId}
                     disabled={isProcessing}
-                    onClick={() => handleBulkEnroll(r.classId)}
+                    onClick={() => {
+                      if (selectedInUnrombel.length > 0) handleBulkEnroll(r.classId);
+                      else handleBulkMove(r.classId);
+                    }}
                     className="w-full p-6 bg-slate-950 border border-slate-800 rounded-3xl hover:border-indigo-500 transition-all flex items-center justify-between group active:scale-95"
                   >
                     <div className="text-left">
@@ -666,16 +734,21 @@ export default function RombelPage() {
                 
                 <div className="pt-4 border-t border-slate-800 mt-4">
                    <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mb-4">Atau Pilih dari Referensi Kelas</p>
-                   {Object.entries(classRef).filter(([id]) => !rombelList.some(r => r.classId === id)).map(([id, val]: [string, any]) => (
-                     <button 
+                   {Object.entries(classRef)
+                    .filter(([id]) => !rombelList.some(r => r.classId === id) && id !== selectedRombel?.classId)
+                    .map(([id, val]: [string, any]) => (
+                      <button 
                         key={id}
-                        onClick={() => handleBulkEnroll(id)}
+                        onClick={() => {
+                          if (selectedInUnrombel.length > 0) handleBulkEnroll(id);
+                          else handleBulkMove(id);
+                        }}
                         className="w-full p-4 mb-2 bg-slate-900/50 border border-slate-800 rounded-2xl hover:border-emerald-500 transition-all flex items-center justify-between group"
-                     >
+                      >
                         <span className="font-bold text-slate-300 text-sm">{val.className}</span>
                         <Plus className="w-4 h-4 text-slate-600 group-hover:text-emerald-500" />
-                     </button>
-                   ))}
+                      </button>
+                    ))}
                 </div>
               </div>
             </motion.div>
