@@ -3,11 +3,14 @@
 > **Gabungan ROADMAP eksisting + ide ekspansi skala industri**  
 > Last Updated: 2026-05-09  
 > 
+> **Last Updated: 2026-05-14** | **Progress: ~21% (23/108 item)**
+>
 > **Legenda Status:**
 > - `[x]` — Selesai dikerjakan
 > - `[ ]` — Belum dikerjakan (akan dikerjakan)
 > - `[~]` — **SKIP** — Ditunda/tidak diprioritaskan saat ini
 > - `[/]` — Sedang dalam pengerjaan
+> - `[+]` — **TAMBAHAN** — Dikerjakan di luar rencana awal
 
 ---
 
@@ -80,7 +83,7 @@
 
 ---
 
-## FASE 1 — Foundation & Multi-School Onboarding ✅ ~60%
+## FASE 1 — Foundation & Multi-School Onboarding ✅ ~64%
 > **Tujuan:** Membangun ekosistem SaaS dan identitas digital sekolah.
 
 ### 1.1 SaaS Core
@@ -101,10 +104,39 @@
 - [x] Halaman daftar Siswa (`/school/{npsn}/students`)
 - [x] Halaman daftar Guru (`/school/{npsn}/teachers`)
 - [x] Halaman daftar Kelas (`/school/{npsn}/classes`)
+- [x] Manajemen Referensi Kelas (`manageClassroomReference`)
+- [x] Update Detail Siswa: nama, foto, data lengkap (`updateStudentDetail`)
 - [ ] **CRUD Manual Siswa** — Tambah/edit/hapus siswa tanpa impor JSON
 - [ ] **CRUD Manual Guru** — Tambah/edit/hapus guru tanpa impor JSON
 - [ ] **Profil Sekolah** — Admin edit profil, logo, visi misi, koordinat peta
 - [ ] **Upload Logo Sekolah** — ke Firebase Storage, tampil di dashboard
+
+### 1.2b Manajemen Rombel `[TAMBAHAN]`
+- [+] Halaman Rombel (`/school/{npsn}/rombel`) — penempatan siswa per kelas
+- [+] Enroll siswa ke rombel (bulk) via `manageRombel`
+- [+] Unenroll, pindah kelas, non-aktifkan, luluskan, restore siswa (bulk)
+- [+] Halaman Arsip Siswa (`/school/{npsn}/archive`) — kelola siswa non-aktif/lulus
+- [+] Trigger otomatis sinkronisasi jumlah siswa per rombel (`onRombelChange`)
+- [+] Recalculate summary manual (`recalcSummary`)
+
+### 1.2c Sistem Link Undangan `[TAMBAHAN]`
+- [+] Generate Link Undangan per role (siswa/guru) dengan token aman
+- [+] Path undangan terpusat: `/invitations/{NPSN}/{USER_TYPE}`
+- [+] Link undangan siswa menyertakan data rombel & tahun ajaran
+- [+] Halaman Manajemen Undangan Admin (`/school/{npsn}/invitations`)
+- [+] Validasi token & pencabutan link (`validateInvitationToken`, `revokeInvitationLink`)
+- [+] Halaman Pendaftaran Publik via token (`/join/[token]`)
+- [+] Alur pendaftaran via undangan (`registerViaInvitation`)
+
+### 1.2d Sistem Validasi / Approval Undangan `[TAMBAHAN]`
+- [+] Antrean Approval: pendaftar disimpan di `/invitation_responses/{NPSN}/{role}` berstatus `pending`
+- [+] Admin Approve: data dipindahkan ke `users/`, `students/`, `teachers/` otomatis
+- [+] Admin Reject: data dihapus dari antrean
+- [+] Deteksi `hasPending`: UI "Sedang Diverifikasi" untuk mencegah pendaftaran ganda
+- [+] Deteksi `isRegistered`: UI "Sudah Terdaftar" + redirect ke halaman login
+- [+] Menu "Validasi Undangan" di sidebar + badge notifikasi real-time
+- [+] Halaman Validasi Undangan (`/invitations/responses`) dengan aksi Approve/Reject
+- [+] Fungsi `manageInvitationResponse` (backend)
 
 ### 1.3 CMS & Portal Publik
 - [ ] **Landing Page Publik per Sekolah** — `/{npsn}` atau `/s/{npsn}`
@@ -329,7 +361,8 @@
 > Saat item selesai, ubah `[ ]` menjadi `[x]`.
 > 
 > **Prioritas pengerjaan selanjutnya (urutan disarankan):**
-> 1. FASE 0: Audit Trail, CI/CD, Multi-Role
-> 2. FASE 1: CRUD Manual Siswa/Guru, Profil Sekolah, Log Activity
-> 3. FASE 1.5: Dapodik Integration
-> 4. FASE 2: Rapor Digital, Presensi Manual
+> 1. **FASE 1 (Sisa)**: CRUD Manual Siswa/Guru, Profil Sekolah + Upload Logo, Log Activity UI
+> 2. **FASE 0**: Audit Trail (UU PDP 2022), Firebase App Check, CI/CD GitHub Actions
+> 3. **FASE 1.5**: Dapodik Integration (KILLER FEATURE)
+> 4. **FASE 1.4**: PPDB Online
+> 5. **FASE 2**: Presensi Manual, Jadwal Pelajaran, Rapor Digital

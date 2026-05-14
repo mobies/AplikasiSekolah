@@ -27,3 +27,17 @@ To ensure optimal performance, low bandwidth usage, and cost efficiency in our R
 - **Cloud Function backend**: All complex logic, database writes (beyond simple user profile updates), and sensitive operations must be offloaded to Cloud Functions (`asia-southeast1`).
 - **Standard Link URL**: All generated links must use dynamic origin (`request.rawRequest.headers.origin`) to support local and production environments automatically.
 - **Suspense Boundaries**: Wrap all components using `useSearchParams` in `<Suspense>` to ensure successful static builds.
+3. **RTDB Security Rules**: Agen AI dilarang keras mengubah atau mendeploy file Security Rules RTDB secara otomatis. Agen hanya boleh memberikan rekomendasi konfigurasi rules di dalam percakapan atau dokumentasi. Kontrol penuh atas perubahan rules ada pada USER.
+
+### Protokol Arsitektur Efisiensi Biaya (Firebase)
+Seluruh agen AI wajib memilih jalur komunikasi data berdasarkan kriteria berikut:
+
+1.  **Jalur Direct SDK (RTDB)** - *Prioritas untuk Efisiensi*:
+    *   Digunakan untuk: CRUD sederhana (Tambah/Edit/Hapus) pada entitas data seperti Siswa, Guru, Kelas, dan Profil.
+    *   Syarat: Logika validasi bisa ditangani sepenuhnya oleh Security Rules.
+    *   Tujuan: Menghilangkan biaya eksekusi Cloud Function dan mengurangi latensi.
+
+2.  **Jalur Cloud Functions (v2)** - *Prioritas untuk Keamanan & Integritas*:
+    *   Digunakan untuk: Transaksi (Pembayaran), Kriptografi (Token), Integrasi Pihak Ketiga (Email/WA), Migrasi Data Besar, dan operasi yang membutuhkan "Server-side Secret".
+    *   Syarat: Operasi atomik lintas path yang sangat kompleks atau membutuhkan validasi yang tidak bisa dilakukan oleh Rules.
+    *   Tujuan: Menjaga integritas data tingkat tinggi dan keamanan kunci API.
